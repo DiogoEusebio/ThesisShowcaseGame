@@ -21,7 +21,7 @@ public class Bullet : MonoBehaviour
         transform.position += Direction * Speed * Time.deltaTime;
         if(transform.position.x > 100 || transform.position.x < -100 || transform.position.z > 100 || transform.position.z < -100)
         {
-            DestroyImmediate(this.gameObject, false);
+            Destroy(this.gameObject);
         }
     }
     public void setDirection(Vector3 direction)
@@ -49,9 +49,9 @@ public class Bullet : MonoBehaviour
         {
             Debug.Log(other.GetComponent<Agent>().GetAgentType());
             if (transform.parent.tag == "RedTeam" && other.gameObject.tag == "BlueTeam" || transform.parent.tag == "BlueTeam" && other.gameObject.tag == "RedTeam")
-            {   
-                DestroyImmediate(this.gameObject);
-                DestroyImmediate(other.gameObject);
+            {
+                Destroy(other.gameObject);
+                Destroy(this.gameObject);
             }
         }
     }

@@ -32,7 +32,7 @@ public class Agent : MonoBehaviour
     {
         //if (Input.GetKey(KeyCode.P) || performingAction)
         //{
-        //WalkRandomly();
+        WalkRandomly();
         if (timeLeftToShootAgain <= 0.0f)
         {
           shootbullet();
@@ -56,7 +56,7 @@ public class Agent : MonoBehaviour
     }
     public void GenereateBasicAgentGoals()
     {
-        //GoalList.Add(new MoveToTargetCoordsGoal(transform, new Vector3(Random.Range(-28.0f,28.0f), 1.0f, Random.Range(-5.0f, 5.0f))));
+        GoalList.Add(new MoveToTargetCoordsGoal(transform, new Vector3(Random.Range(-28.0f,28.0f), 1.0f, Random.Range(-5.0f, 5.0f))));
         if(agentType == AgentType.Cone)
         {
             GoalList.Add(new ShootEnemyGoal(transform));
@@ -103,9 +103,9 @@ public class Agent : MonoBehaviour
 
     public Action GetRandomActionToAchiveSpecifiedGoal(Goal g)
     {
-        int numberOfActions = GoalBeingPursued.GetActionsFromGoal().Count; //-1 to get list index
+        int numberOfActions = g.GetActionsFromGoal().Count; //-1 to get list index
         //Debug.Log(numberOfActions);
-        Action RandomActionFromThisGoal = GoalBeingPursued.GetActionsFromGoal()[Random.Range(0, numberOfActions - 1)];
+        Action RandomActionFromThisGoal = g.GetActionsFromGoal()[Random.Range(0, numberOfActions - 1)];
         //Debug.Log(RandomActionFromThisGoal.GetName());
         return RandomActionFromThisGoal;
     }
