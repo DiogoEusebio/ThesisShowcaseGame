@@ -4,15 +4,11 @@ using UnityEngine;
 
 public class Agent : MonoBehaviour
 {
-    private List<Goal> GoalList = new List<Goal>();
-    private List<Action> ActionList = new List<Action>();
-    private List<Role> RoleList = new List<Role>();
-    private float place = -1.0f;
-    private float timeLeftToShootAgain = 1.0f;
-    private float fireRate = 1.0f;
-    //private bool performingAction = false;
-    private Goal GoalBeingPursued;
-    private Action ActionToExecute;
+    protected List<Goal> GoalList = new List<Goal>();
+    protected List<Action> ActionList = new List<Action>();
+    protected List<Role> RoleList = new List<Role>();
+    protected Goal GoalBeingPursued;
+    protected Action ActionToExecute;
     public enum AgentType
     {
         Cube,
@@ -21,32 +17,27 @@ public class Agent : MonoBehaviour
     }
     private AgentType agentType;
     // Start is called before the first frame update
-    void Start()
+    protected virtual void Start()
     {
         GenereateBasicAgentGoals();
         GetActionsFromGoals();
     }
 
     // Update is called once per frame
-    void Update()
+    protected virtual void Update()
     {
-        //if (Input.GetKey(KeyCode.P) || performingAction)
-        //{
         WalkRandomly();
-        if (timeLeftToShootAgain <= 0.0f)
-        {
-          shootbullet();
-          timeLeftToShootAgain = fireRate;
-        }
-        timeLeftToShootAgain -= Time.deltaTime;
-        
     }
+
     public void SetAgentType(AgentType at) { agentType = at; }
     public AgentType GetAgentType() { return agentType; }
     public void GetActionsFromGoals()
     {
+        //Debug.Log("GETTING ACTIONS...");
+        //TODO: add check for repeated actions
         foreach(Goal g in GoalList)
         {
+            //Debug.Log(g.GetName());
             ActionList.AddRange(g.GetActionsFromGoal());
         }
     }
@@ -109,9 +100,17 @@ public class Agent : MonoBehaviour
         //Debug.Log(RandomActionFromThisGoal.GetName());
         return RandomActionFromThisGoal;
     }
+
+    public void PerformSimulActions()
+    {
+        Action LookAtAction = ActionList.Find((action) => action.GetName() == "LookAtCloserEnemyAction");
+        if (LookAtAction != null) { LookAtAction.Perform(); }
+    }
+
     public void WalkRandomly()
     {
-        GoalBeingPursued = GoalList.Find((goal) => goal.GetName() == "MoveToPositionAction");
+        GoalBeingPursued = GoalList.Find((goal) => goal.GetName() == "MoveToPositionGoal");
+        //PerformSimulActions(); //look at doesn work with random Action (gets stuck just looking)
         ActionToExecute = GetRandomActionToAchiveSpecifiedGoal(GoalBeingPursued);
         if (ActionToExecute.Perform() == Action.State.Executed)
         {
@@ -122,12 +121,6 @@ public class Agent : MonoBehaviour
         }
     }
 
-    public void shootbullet()
-    {
-        GoalBeingPursued = GoalList.Find((goal) => goal.GetName() == "ShootEnemyGoal");
-        ActionToExecute = GetRandomActionToAchiveSpecifiedGoal(GoalBeingPursued);
-        ActionToExecute.Perform();
-    }
     void OnDrawGizmos()
     {
         Color color;
@@ -139,5 +132,26 @@ public class Agent : MonoBehaviour
         Gizmos.color = color;
         Vector3 destination = transform.position + direction * scale;
         Gizmos.DrawLine(transform.position, destination);
+    }
+
+    public void ContestObjective()
+    {
+        //Debug.Log("!!!");
+        GoalBeingPursued = GoalList.Find((goal) => goal.GetName() == "ContestObjectiveGoal");
+        //Debug.Log("???");
+        //Debug.Log(GoalBeingPursued);
+        PerformSimulActions();
+        ActionToExecute = GetRandomActionToAchiveSpecifiedGoal(GoalBeingPursued);
+        //Debug.Log(ActionToExecute);
+        if (ActionToExecute.Perform() == Action.State.Executed)
+        {
+            GoalBeingPursued.SetGoalState(Goal.State.Achieved);
+            RemoveAchivedGoal(GoalBeingPursued);
+            RemoveActionsAssociatedToGoal(GoalBeingPursued);
+            GameObject objective = GameObject.FindWithTag("Objective");
+            Vector3 ObjPos = objective.transform.position;
+            GoalList.Add(new ContestObjectiveGoal(transform, new Vector3(Random.Range(ObjPos.x -3.0f, ObjPos.x + 3.0f), 1.0f, Random.Range(ObjPos.z - 3.0f, ObjPos.z + 3.0f))));
+            GetActionsFromGoals();
+        }
     }
 }

@@ -323,7 +323,7 @@ GameObject:
   - component: {fileID: 238142126}
   m_Layer: 0
   m_Name: Cylinder
-  m_TagString: Untagged
+  m_TagString: Objective
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1626,7 +1626,7 @@ MonoBehaviour:
   Redteam: {fileID: 370606070}
   Blueteam: {fileID: 2098901006}
   RedTeamSize: 3
-  BlueTeamSize: 3
+  BlueTeamSize: 1
   RedMat: {fileID: 2100000, guid: d7324fc0609580f46994727178d65584, type: 2}
   BlueMat: {fileID: 2100000, guid: 38a9dbd64a2357b4fa5a27880b3327bd, type: 2}
 --- !u!1 &1700843441

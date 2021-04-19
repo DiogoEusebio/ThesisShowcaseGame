@@ -20,7 +20,6 @@ public class MoveToPositionAction : Action
 
     public override State Perform()
     {
-        agentTransform.LookAt(targetPosition);
         agentTransform.position += direction * 10.0f * Time.deltaTime;
         //Stop condition
         if (Vector3.Distance(agentTransform.position, targetPosition) < 0.1f)
@@ -28,9 +27,5 @@ public class MoveToPositionAction : Action
             ActionState = State.Executed;
         }
         return ActionState;
-    }
-    public override string ToString()
-    {
-        return "Move to Position Action";
     }
 }

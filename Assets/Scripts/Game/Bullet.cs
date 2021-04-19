@@ -7,12 +7,12 @@ public class Bullet : MonoBehaviour
     private float Speed = 30.0f;
     private Rigidbody Rb;
     private Vector3 Direction;
+    private Transform parent;
     // Start is called before the first frame update
 
     void Start()
     {
         Rb = this.GetComponent<Rigidbody>();
-        transform.localScale = new Vector3(0.002f, 0.01f, 0.002f); //hack becuase the cone mesh (parent) was imported with wrong dimensions
     }
 
     // Update is called once per frame
@@ -27,6 +27,10 @@ public class Bullet : MonoBehaviour
     public void setDirection(Vector3 direction)
     {
         Direction = direction;
+    }
+    public void setParent(Transform agent)
+    {
+        parent = agent;
     }
 
     void OnDrawGizmos()
@@ -44,15 +48,17 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("bullet collision");
-        if(other.GetComponent<Agent>().GetAgentType() != Agent.AgentType.Cube)
+        //Debug.Log("bullet collision");
+        if(other.TryGetComponent(out Agent otherAgent))
         {
-            Debug.Log(other.GetComponent<Agent>().GetAgentType());
-            if (transform.parent.tag == "RedTeam" && other.gameObject.tag == "BlueTeam" || transform.parent.tag == "BlueTeam" && other.gameObject.tag == "RedTeam")
+            if(otherAgent.GetAgentType() != Agent.AgentType.Cube)
             {
-                Destroy(other.gameObject);
-                Destroy(this.gameObject);
+                if (parent.gameObject.tag == "RedTeam" && other.gameObject.tag == "BlueTeam" || parent.gameObject.tag == "BlueTeam" && other.gameObject.tag == "RedTeam")
+                {
+                    Destroy(other.gameObject);
+                    Destroy(this.gameObject);
+                }
             }
-        }
+        }  
     }
 }
