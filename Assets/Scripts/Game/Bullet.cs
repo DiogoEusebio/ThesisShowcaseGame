@@ -55,7 +55,7 @@ public class Bullet : MonoBehaviour
             {
                 if (parent.gameObject.tag == "RedTeam" && other.gameObject.tag == "BlueTeam" || parent.gameObject.tag == "BlueTeam" && other.gameObject.tag == "RedTeam")
                 {
-                    Destroy(other.gameObject);
+                    otherAgent.TakeDamage(50.0f);
                     Destroy(this.gameObject);
                 }
             }

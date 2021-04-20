@@ -6,11 +6,11 @@ public abstract class Action
 {
     public enum State
     {
-        notBeingExecuted,
+        NotBeingExecuted,
         BeingExecuted,
         Executed
     }
-    public State ActionState = State.notBeingExecuted;
+    public State ActionState = State.NotBeingExecuted;
 
     protected string name;
     public string GetName()

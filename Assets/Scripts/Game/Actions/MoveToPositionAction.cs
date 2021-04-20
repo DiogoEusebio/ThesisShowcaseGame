@@ -7,6 +7,7 @@ public class MoveToPositionAction : Action
     private Transform agentTransform;
     private Vector3 targetPosition;
     private Vector3 direction;
+    private float movementSpeed = 10.0f;
     public MoveToPositionAction(Transform AgentTransform, Vector3 v)
     {
         name = "MoveToPositionAction";
@@ -20,7 +21,7 @@ public class MoveToPositionAction : Action
 
     public override State Perform()
     {
-        agentTransform.position += direction * 10.0f * Time.deltaTime;
+        agentTransform.position += direction * movementSpeed * Time.deltaTime;
         //Stop condition
         if (Vector3.Distance(agentTransform.position, targetPosition) < 0.1f)
         {

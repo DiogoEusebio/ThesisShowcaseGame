@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         transform.position = new Vector3(32.0f, 1.0f, 0.0f);
-        transform.gameObject.tag = "RedTeam";
+        //transform.gameObject.tag = "RedTeam";
     }
 
     // Update is called once per frame

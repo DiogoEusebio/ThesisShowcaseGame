@@ -2,17 +2,34 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CubeAgent : MonoBehaviour
+public class CubeAgent : Agent
 {
-    // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
-        
+        SetMaxHP(100.0f);
+        SetCurrentHPtoMax();
+        GenerateBasicAgentGoals();
+        GetActionsFromGoals();
     }
 
-    // Update is called once per frame
-    void Update()
+    protected override void Update()
     {
-        
+        if (GetIsDead())
+        {
+            respawnTimer -= Time.deltaTime;
+            RespawnAgent(respawnTimer);
+        }
+        else
+        {
+            ContestObjective();
+        }
+    }
+    protected override void GenerateBasicAgentGoals()
+    {
+        GameObject objective = GameObject.FindWithTag("Objective");
+        //Debug.Log(objective);
+        Vector3 ObjPos = objective.transform.position;
+        //Debug.Log(ObjPos);
+        GoalList.Add(new ContestObjectiveGoal(transform, new Vector3(Random.Range(ObjPos.x - 3.0f, ObjPos.x + 3.0f), 1.0f, Random.Range(ObjPos.z - 3.0f, ObjPos.z + 3.0f))));
     }
 }

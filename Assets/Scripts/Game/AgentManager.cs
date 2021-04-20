@@ -14,8 +14,6 @@ public class AgentManager : MonoBehaviour
     public Material RedMat;
     public Material BlueMat;
 
-    private List<GameObject> RedTeam;
-    private List<GameObject> BlueTeam;
     private Vector3 RedTeamSpawnPoint = new Vector3(32.0f, 1.0f, 0.0f);
     private Vector3 BlueTeamSpawnPoint = new Vector3(-32.0f, 1.0f, 0.0f);
     // Start is called before the first frame update
@@ -25,13 +23,85 @@ public class AgentManager : MonoBehaviour
         SpherePrefab.SetActive(false);
         ConePrefab.SetActive(false);
         //GenerateRandomComps();
-        GenerateCompsOfTypes(2, 3);
+        GenerateCompsOfTypes(1, 2);
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+    public bool IsEnemyTeamAced(string AgentTag)
+    {
+        if(AgentTag == "BlueTeam")
+        {
+            return GetNumberOfDeadEnemies("RedTeam") == Redteam.transform.childCount;
+        }
+        else
+        {
+            return GetNumberOfDeadEnemies("BlueTeam") == Blueteam.transform.childCount;
+        }
+    }
+    public int GetNumberOfDeadEnemies(string EnemyTeamTag)
+    {
+        int numberOfDeadEnemies = 0;
+        if(EnemyTeamTag == "BlueTeam")
+        {
+            foreach(Transform enemy in Blueteam.GetComponentInChildren<Transform>())
+            {
+                if (enemy.GetComponent<Agent>().GetIsDead())
+                {
+                    numberOfDeadEnemies++;
+                }
+            }
+        }
+        if(EnemyTeamTag == "RedTeam")
+        {
+            foreach (Transform enemy in Redteam.GetComponentInChildren<Transform>())
+            {
+                if (enemy.GetComponent<Agent>().GetIsDead())
+                {
+                    numberOfDeadEnemies++;
+                }
+            }
+        }
+        return numberOfDeadEnemies;
+    }
+    public Transform GetClossestEnemy(Transform agentTransform, string EnemyTeam)
+    {
+        float distance = 1000.0f;
+        Transform ClossestEnemy = null;
+        if(EnemyTeam == "BlueTeam")
+        {
+            foreach (Transform enemy in Blueteam.GetComponentInChildren<Transform>())
+            {
+                if(enemy.GetComponent<Agent>().GetIsDead() == false)
+                {
+                    float newDistance = Vector3.Distance(agentTransform.position, enemy.position);
+                    if (newDistance < distance)
+                    {
+                        ClossestEnemy = enemy;
+                        distance = newDistance;
+                    }
+                }
+            }
+        }
+        else if (EnemyTeam == "RedTeam")
+        {
+            foreach (Transform enemy in Redteam.GetComponentInChildren<Transform>())
+            {
+                if (enemy.GetComponent<Agent>().GetIsDead() == false)
+                {
+                    float newDistance = Vector3.Distance(agentTransform.position, enemy.position);
+                    if (newDistance < distance)
+                    {
+                        ClossestEnemy = enemy;
+                        distance = newDistance;
+                    }
+                }
+            }
+        }
+        return ClossestEnemy;
     }
     void GenerateCompsOfTypes(int blueType, int redType)
     {

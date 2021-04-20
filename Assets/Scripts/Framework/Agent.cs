@@ -9,6 +9,11 @@ public class Agent : MonoBehaviour
     protected List<Role> RoleList = new List<Role>();
     protected Goal GoalBeingPursued;
     protected Action ActionToExecute;
+    private float MaxHP;
+    private float CurrentHP;
+    private bool isDead = false;
+    protected float respawnTimer;
+
     public enum AgentType
     {
         Cube,
@@ -19,18 +24,40 @@ public class Agent : MonoBehaviour
     // Start is called before the first frame update
     protected virtual void Start()
     {
-        GenereateBasicAgentGoals();
+        SetMaxHP(100.0f);
+        SetCurrentHPtoMax();
+        GenerateBasicAgentGoals();
         GetActionsFromGoals();
     }
 
     // Update is called once per frame
     protected virtual void Update()
     {
-        WalkRandomly();
+        if (isDead)
+        {
+            respawnTimer -= Time.deltaTime;
+            RespawnAgent(respawnTimer);
+        }
+        else
+        {
+            WalkRandomly();
+        }
     }
-
+    //--------------------- Gets and Sets -----------------------//
     public void SetAgentType(AgentType at) { agentType = at; }
     public AgentType GetAgentType() { return agentType; }
+    public bool GetIsDead() { return isDead; }
+    public void SetIsDead(bool value) { isDead = value; }
+    public void SetMaxHP(float newMaxHPvalue) { MaxHP = newMaxHPvalue; }
+    public void SetCurrentHPtoMax() { CurrentHP = MaxHP; }
+    public void TakeDamage(float dmg)
+    {
+        CurrentHP -= dmg;
+        if(CurrentHP <= 0)
+        {
+            KillAgent();
+        }
+    }
     public void GetActionsFromGoals()
     {
         //Debug.Log("GETTING ACTIONS...");
@@ -45,12 +72,12 @@ public class Agent : MonoBehaviour
     {
         //TODO
     }
-    public void GenereateBasicAgentGoals()
+    protected virtual void GenerateBasicAgentGoals()
     {
         GoalList.Add(new MoveToTargetCoordsGoal(transform, new Vector3(Random.Range(-28.0f,28.0f), 1.0f, Random.Range(-5.0f, 5.0f))));
         if(agentType == AgentType.Cone)
         {
-            GoalList.Add(new ShootEnemyGoal(transform));
+            GoalList.Add(new AttackEnemyGoal(transform));
         }
     }
     public Vector3 GetAgentCurrentPosition()
@@ -107,19 +134,41 @@ public class Agent : MonoBehaviour
         if (LookAtAction != null) { LookAtAction.Perform(); }
     }
 
-    public void WalkRandomly()
+    public void KillAgent()
     {
-        GoalBeingPursued = GoalList.Find((goal) => goal.GetName() == "MoveToPositionGoal");
-        //PerformSimulActions(); //look at doesn work with random Action (gets stuck just looking)
-        ActionToExecute = GetRandomActionToAchiveSpecifiedGoal(GoalBeingPursued);
-        if (ActionToExecute.Perform() == Action.State.Executed)
+        isDead = true;
+        this.transform.position = new Vector3(0.0f, -50.0f, 0.0f);
+        //Clear Roles, Goals and Actions
+        ActionList = new List<Action>();
+        GoalList = new List<Goal>();
+        RoleList = new List<Role>();
+        respawnTimer = 0.05f * Time.realtimeSinceStartup + 2.0f; //consider other equation
+        RespawnAgent(respawnTimer);
+    }
+    public void RespawnAgent(float respawnTimer)
+    {
+        if (respawnTimer <= 0)
         {
-            GoalBeingPursued.SetGoalState(Goal.State.Achieved);
-            RemoveAchivedGoal(GoalBeingPursued);
-            RemoveActionsAssociatedToGoal(GoalBeingPursued);
-            GoalList.Add(new MoveToTargetCoordsGoal(transform, new Vector3(Random.Range(-28.0f,28.0f), 1.0f, Random.Range(-5.0f, 5.0f))));
+            isDead = false;
+            if (transform.gameObject.CompareTag("BlueTeam"))
+            {
+                transform.position = new Vector3(-32.0f, 1.0f, 0.0f); //Hack: copy pasted value from AgentManager, consider doing this there/acess the variable
+                SetMaxHP(100.0f);
+                SetCurrentHPtoMax();
+                GenerateBasicAgentGoals();
+                GetActionsFromGoals();
+            }
+            else if (transform.gameObject.CompareTag("RedTeam"))
+            {
+                transform.position = new Vector3(32.0f, 1.0f, 0.0f); //Hack: copy pasted value from AgentManager, consider doing this there/acess the variable
+                SetMaxHP(100.0f);
+                SetCurrentHPtoMax();
+                GenerateBasicAgentGoals(); //problem here
+                GetActionsFromGoals();
+            }
         }
     }
+    //-------------------------- Debug Methods -----------------------//
 
     void OnDrawGizmos()
     {
@@ -132,6 +181,22 @@ public class Agent : MonoBehaviour
         Gizmos.color = color;
         Vector3 destination = transform.position + direction * scale;
         Gizmos.DrawLine(transform.position, destination);
+    }
+
+    //------------------------ AI/Behavior methods -----------------------------//
+
+    public void WalkRandomly()
+    {
+        GoalBeingPursued = GoalList.Find((goal) => goal.GetName() == "MoveToPositionGoal");
+        //PerformSimulActions(); //look at doesn work with random Action (gets stuck just looking)
+        ActionToExecute = GetRandomActionToAchiveSpecifiedGoal(GoalBeingPursued);
+        if (ActionToExecute.Perform() == Action.State.Executed)
+        {
+            GoalBeingPursued.SetGoalState(Goal.State.Achieved);
+            RemoveAchivedGoal(GoalBeingPursued);
+            RemoveActionsAssociatedToGoal(GoalBeingPursued);
+            GoalList.Add(new MoveToTargetCoordsGoal(transform, new Vector3(Random.Range(-28.0f, 28.0f), 1.0f, Random.Range(-5.0f, 5.0f))));
+        }
     }
 
     public void ContestObjective()
@@ -151,7 +216,7 @@ public class Agent : MonoBehaviour
             GameObject objective = GameObject.FindWithTag("Objective");
             Vector3 ObjPos = objective.transform.position;
             GoalList.Add(new ContestObjectiveGoal(transform, new Vector3(Random.Range(ObjPos.x -3.0f, ObjPos.x + 3.0f), 1.0f, Random.Range(ObjPos.z - 3.0f, ObjPos.z + 3.0f))));
-            GetActionsFromGoals();
+            GetActionsFromGoals(); //this might be duplicating actions: take a look later
         }
     }
 }
