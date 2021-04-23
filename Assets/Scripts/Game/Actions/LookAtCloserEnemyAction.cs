@@ -24,18 +24,19 @@ public class LookAtCloserEnemyAction : Action
             if (enemies.Length > 0)
             {
                 foreach(GameObject enemy in enemies)
-                {
-                    if(Vector3.Distance(enemy.transform.position,agentTransform.position) < enemyDistance)
+                {   
+                    if(enemy.GetComponent<Agent>().GetIsDead() == false)
                     {
-                        enemyDistance = Vector3.Distance(enemy.transform.position, agentTransform.position);
-                        if (enemy.GetComponent<Agent>().GetIsDead() == false)
+                        if (Vector3.Distance(enemy.transform.position, agentTransform.position) < enemyDistance)
                         {
+                            enemyDistance = Vector3.Distance(enemy.transform.position, agentTransform.position);
                             clossestEnemy = enemy.transform;
                         }
                     }
                 }
             }
-            if (enemies.Length == 0 || GameObject.FindWithTag("AgentManager").GetComponent<AgentManager>().GetNumberOfDeadEnemies("RedTeam") == enemies.Length)
+            //Debug.Log(GameObject.FindWithTag("AgentManager").GetComponent<AgentManager>().GetNumberOfDeadEnemies("BlueTeam"));
+            if (enemies.Length == 0 || GameObject.FindWithTag("AgentManager").GetComponent<AgentManager>().GetNumberOfDeadEnemies("BlueTeam") == enemies.Length)
             {
                 clossestEnemy = GameObject.FindWithTag("Objective").transform;
             }
@@ -47,16 +48,17 @@ public class LookAtCloserEnemyAction : Action
             {
                 foreach (GameObject enemy in enemies)
                 {
-                    if (Vector3.Distance(enemy.transform.position, agentTransform.position) < enemyDistance)
+                    if (enemy.GetComponent<Agent>().GetIsDead() == false)
                     {
-                        enemyDistance = Vector3.Distance(enemy.transform.position, agentTransform.position);
-                        if (enemy.GetComponent<Agent>().GetIsDead() == false)
+                        if (Vector3.Distance(enemy.transform.position, agentTransform.position) < enemyDistance)
                         {
+                            enemyDistance = Vector3.Distance(enemy.transform.position, agentTransform.position);
                             clossestEnemy = enemy.transform;
                         }
                     }
                 }
             }
+            //Debug.Log(GameObject.FindWithTag("AgentManager").GetComponent<AgentManager>().GetNumberOfDeadEnemies("RedTeam") + " | " + enemies.Length);
             if(enemies.Length == 0 || GameObject.FindWithTag("AgentManager").GetComponent<AgentManager>().GetNumberOfDeadEnemies("RedTeam") == enemies.Length)
             {
                 clossestEnemy = GameObject.FindWithTag("Objective").transform;

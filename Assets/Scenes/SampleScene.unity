@@ -1621,11 +1621,11 @@ MonoBehaviour:
     type: 3}
   SpherePrefab: {fileID: 5776759252513366195, guid: e07620621ae6baa468bbcf76c38afac1,
     type: 3}
-  ConePrefab: {fileID: 3618028183723892288, guid: fae7ed17381b5ab4d902119c02d15a20,
+  ConePrefab: {fileID: 8989516420576922702, guid: c5404e18478b01f4297f5ff2701436f4,
     type: 3}
   Redteam: {fileID: 370606070}
   Blueteam: {fileID: 2098901006}
-  RedTeamSize: 4
+  RedTeamSize: 1
   BlueTeamSize: 1
   RedMat: {fileID: 2100000, guid: d7324fc0609580f46994727178d65584, type: 2}
   BlueMat: {fileID: 2100000, guid: 38a9dbd64a2357b4fa5a27880b3327bd, type: 2}

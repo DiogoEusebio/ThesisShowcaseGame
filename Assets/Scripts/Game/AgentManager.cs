@@ -19,9 +19,6 @@ public class AgentManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        CubePrefab.SetActive(false);
-        SpherePrefab.SetActive(false);
-        ConePrefab.SetActive(false);
         //GenerateRandomComps();
         GenerateCompsOfTypes(1, 2);
     }
@@ -67,13 +64,13 @@ public class AgentManager : MonoBehaviour
         }
         return numberOfDeadEnemies;
     }
-    public Transform GetClossestEnemy(Transform agentTransform, string EnemyTeam)
+    public Transform GetClossestEnemy(Transform agentTransform, string MyTeam)
     {
         float distance = 1000.0f;
         Transform ClossestEnemy = null;
-        if(EnemyTeam == "BlueTeam")
+        if(MyTeam == "BlueTeam")
         {
-            foreach (Transform enemy in Blueteam.GetComponentInChildren<Transform>())
+            foreach (Transform enemy in Redteam.GetComponentInChildren<Transform>())
             {
                 if(enemy.GetComponent<Agent>().GetIsDead() == false)
                 {
@@ -86,9 +83,9 @@ public class AgentManager : MonoBehaviour
                 }
             }
         }
-        else if (EnemyTeam == "RedTeam")
+        else if (MyTeam == "RedTeam")
         {
-            foreach (Transform enemy in Redteam.GetComponentInChildren<Transform>())
+            foreach (Transform enemy in Blueteam.GetComponentInChildren<Transform>())
             {
                 if (enemy.GetComponent<Agent>().GetIsDead() == false)
                 {
@@ -108,13 +105,13 @@ public class AgentManager : MonoBehaviour
         GameObject newObj;
         for (uint i = 0; i < RedTeamSize; i++)
         {
-            newObj = GenerateAgentOfType(RedTeamSpawnPoint, Redteam.transform,blueType);
+            newObj = GenerateAgentOfType(RedTeamSpawnPoint, Redteam.transform, redType);
             newObj.GetComponent<Renderer>().material = RedMat;
             newObj.tag = "RedTeam";
         }
         for (uint i = 0; i < BlueTeamSize; i++)
         {
-            newObj = GenerateAgentOfType(BlueTeamSpawnPoint, Blueteam.transform,redType);
+            newObj = GenerateAgentOfType(BlueTeamSpawnPoint, Blueteam.transform, blueType);
             newObj.GetComponent<Renderer>().material = BlueMat;
             newObj.tag = "BlueTeam";
         }

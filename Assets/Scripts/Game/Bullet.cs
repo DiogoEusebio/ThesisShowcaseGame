@@ -48,7 +48,7 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        //Debug.Log("bullet collision");
+        //Debug.Log("bullet collision "+ other);
         if(other.TryGetComponent(out Agent otherAgent))
         {
             if(otherAgent.GetAgentType() != Agent.AgentType.Cube)

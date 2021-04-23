@@ -68,6 +68,13 @@ public class Agent : MonoBehaviour
             ActionList.AddRange(g.GetActionsFromGoal());
         }
     }
+    public void GetActionsFormSpecificGoal(Goal g)
+    {
+        if(GoalList.Contains(g))
+        {
+            ActionList.AddRange(g.GetActionsFromGoal());
+        }
+    }
     public void GenerateGoalsBasedOnRole(Role role)
     {
         //TODO
@@ -75,10 +82,6 @@ public class Agent : MonoBehaviour
     protected virtual void GenerateBasicAgentGoals()
     {
         GoalList.Add(new MoveToTargetCoordsGoal(transform, new Vector3(Random.Range(-28.0f,28.0f), 1.0f, Random.Range(-5.0f, 5.0f))));
-        if(agentType == AgentType.Cone)
-        {
-            GoalList.Add(new AttackEnemyGoal(transform));
-        }
     }
     public Vector3 GetAgentCurrentPosition()
     {
@@ -182,6 +185,24 @@ public class Agent : MonoBehaviour
         Vector3 destination = transform.position + direction * scale;
         Gizmos.DrawLine(transform.position, destination);
     }
+    public void DebugLogActions()
+    {   
+        string DebugLogActionsString = "";
+        foreach(Action a in ActionList)
+        {
+            DebugLogActionsString += " | " + a.GetName();
+        }
+        Debug.Log(DebugLogActionsString);
+    }
+    public void DebugLogGoals()
+    {
+        string DebugLogGoalsString = "";
+        foreach (Goal a in GoalList)
+        {
+            DebugLogGoalsString += " | " + a.GetName();
+        }
+        Debug.Log(DebugLogGoalsString);
+    }
 
     //------------------------ AI/Behavior methods -----------------------------//
 
@@ -206,7 +227,8 @@ public class Agent : MonoBehaviour
         //Debug.Log("???");
         //Debug.Log(GoalBeingPursued);
         PerformSimulActions();
-        ActionToExecute = GetRandomActionToAchiveSpecifiedGoal(GoalBeingPursued);
+        //ActionToExecute = GetRandomActionToAchiveSpecifiedGoal(GoalBeingPursued);
+        ActionToExecute = ActionList.Find((action) => action.GetName() == "MoveToPositionAction");
         //Debug.Log(ActionToExecute);
         if (ActionToExecute.Perform() == Action.State.Executed)
         {
@@ -216,7 +238,7 @@ public class Agent : MonoBehaviour
             GameObject objective = GameObject.FindWithTag("Objective");
             Vector3 ObjPos = objective.transform.position;
             GoalList.Add(new ContestObjectiveGoal(transform, new Vector3(Random.Range(ObjPos.x -3.0f, ObjPos.x + 3.0f), 1.0f, Random.Range(ObjPos.z - 3.0f, ObjPos.z + 3.0f))));
-            GetActionsFromGoals(); //this might be duplicating actions: take a look later
+            GetActionsFormSpecificGoal(GoalList.Find((goal) => goal.GetName() == "ContestObjectiveGoal"));
         }
     }
 }
