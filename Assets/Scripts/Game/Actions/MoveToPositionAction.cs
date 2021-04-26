@@ -16,7 +16,11 @@ public class MoveToPositionAction : Action
         agentTransform = AgentTransform;
         direction = targetPosition - agentTransform.position;
         direction.Normalize();
-        //Debug.Log("CurrentPosition:" + agentTransform.position +"TargetPosition" + targetPosition);
+        if(agentTransform.TryGetComponent(out SphereAgent SAgent))
+        {
+            Debug.Log(SAgent.GetAgentType());
+            Debug.Log("CurrentPosition:" + agentTransform.position + "TargetPosition" + targetPosition);
+        }
     }
 
     public override State Perform()

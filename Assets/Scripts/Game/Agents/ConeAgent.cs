@@ -24,8 +24,8 @@ public class ConeAgent : Agent
         }
         else
         {
-            DebugLogGoals();
-            DebugLogActions();
+            //DebugLogGoals();
+            //DebugLogActions();
 
             ContestObjective();
             if (timeLeftToShootAgain <= 0.0f)

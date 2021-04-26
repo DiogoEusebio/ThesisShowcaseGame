@@ -43,6 +43,10 @@ public class Agent : MonoBehaviour
             WalkRandomly();
         }
     }
+    protected virtual void FixedUpdate()
+    {
+        //do nothing
+    }
     //--------------------- Gets and Sets -----------------------//
     public void SetAgentType(AgentType at) { agentType = at; }
     public AgentType GetAgentType() { return agentType; }
@@ -52,6 +56,7 @@ public class Agent : MonoBehaviour
     public void SetCurrentHPtoMax() { CurrentHP = MaxHP; }
     public void TakeDamage(float dmg)
     {
+        Debug.Log("current Hp: " + CurrentHP);
         CurrentHP -= dmg;
         if(CurrentHP <= 0)
         {
@@ -222,14 +227,9 @@ public class Agent : MonoBehaviour
 
     public void ContestObjective()
     {
-        //Debug.Log("!!!");
         GoalBeingPursued = GoalList.Find((goal) => goal.GetName() == "ContestObjectiveGoal");
-        //Debug.Log("???");
-        //Debug.Log(GoalBeingPursued);
         PerformSimulActions();
-        //ActionToExecute = GetRandomActionToAchiveSpecifiedGoal(GoalBeingPursued);
         ActionToExecute = ActionList.Find((action) => action.GetName() == "MoveToPositionAction");
-        //Debug.Log(ActionToExecute);
         if (ActionToExecute.Perform() == Action.State.Executed)
         {
             GoalBeingPursued.SetGoalState(Goal.State.Achieved);

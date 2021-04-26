@@ -18,4 +18,5 @@ public abstract class Action
         return name;
     }
     public abstract State Perform();
+    public virtual bool GetIsOnCoolDown() { return false; }
 }

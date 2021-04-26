@@ -4,10 +4,9 @@ using UnityEngine;
 
 public class SphereAgent : Agent
 {   
-    private float randomBehaviorFlag;
+    private bool attackIsOnCoolDown = false;
     protected override void Start()
     {
-        randomBehaviorFlag = Random.Range(0.0f, 1.0f);
         SetMaxHP(100.0f);
         SetCurrentHPtoMax();
         GenerateBasicAgentGoals();
@@ -25,14 +24,13 @@ public class SphereAgent : Agent
         {
             DebugLogGoals();
             DebugLogActions();
-            //50%50% contest/attack enemy
-            if (GoalBeingPursued != null && GoalBeingPursued.GetGoalState() == Goal.State.Achieved)
-            {
-                Debug.Log("new random");
-                randomBehaviorFlag = Random.Range(0.0f, 1.0f);
-            }
+
+            //HACK
+            GoalBeingPursued = GoalList.Find((goal) => goal.GetName() == "AttackEnemyGoal");
+            ActionToExecute = GoalBeingPursued.GetActionsFromGoal().Find((action) => action.GetName() == "ChargeAttackAction");
+            attackIsOnCoolDown = ActionToExecute.GetIsOnCoolDown();
             //Debug.Log(GameObject.FindWithTag("AgentManager").GetComponent<AgentManager>().IsEnemyTeamAced(transform.gameObject.tag));
-            if (!GameObject.FindWithTag("AgentManager").GetComponent<AgentManager>().IsEnemyTeamAced(transform.gameObject.tag) && randomBehaviorFlag < 2.0f)
+            if (!GameObject.FindWithTag("AgentManager").GetComponent<AgentManager>().IsEnemyTeamAced(transform.gameObject.tag) && !attackIsOnCoolDown)
             {
                     Debug.Log("Charging at enemy");
                     ChargeAtEnemy();
@@ -55,25 +53,29 @@ public class SphereAgent : Agent
     }
 
     void ChargeAtEnemy()
-    {   
-        //check if there are enemies I can charge at first
-        if (GameObject.FindWithTag("AgentManager").GetComponent<AgentManager>().IsEnemyTeamAced(transform.gameObject.tag))
-        {
-            ContestObjective();
-        }
-
+    {
         GoalBeingPursued = GoalList.Find((goal) => goal.GetName() == "AttackEnemyGoal");
-        PerformSimulActions(); //This might cause problems later because the simul action is not granted by this goal
         ActionToExecute = GoalBeingPursued.GetActionsFromGoal().Find((action) => action.GetName() == "ChargeAttackAction");
+        attackIsOnCoolDown = ActionToExecute.GetIsOnCoolDown();
 
-        if(ActionToExecute.Perform() == Action.State.Executed)
+        //check if there are enemies I can charge at first
+        //redundant if?
+        if (GameObject.FindWithTag("AgentManager").GetComponent<AgentManager>().IsEnemyTeamAced(transform.gameObject.tag) || attackIsOnCoolDown)
+        {   
+            //cant execute this action
+            return;
+        }
+        PerformSimulActions(); //This might cause problems later because the simul action is not granted by this goal
+
+        if (ActionToExecute.Perform() == Action.State.Executed)
         {
-            GoalBeingPursued.SetGoalState(Goal.State.Achieved);
+            attackIsOnCoolDown = true;
+            /*GoalBeingPursued.SetGoalState(Goal.State.Achieved);
             RemoveAchivedGoal(GoalBeingPursued);
             RemoveActionsAssociatedToGoal(GoalBeingPursued);
             Transform clossestEnemyTransform = GameObject.FindWithTag("AgentManager").GetComponent<AgentManager>().GetClossestEnemy(transform, transform.gameObject.tag);
             GoalList.Add(new AttackEnemyGoal(transform, clossestEnemyTransform));
-            GetActionsFormSpecificGoal(GoalList.Find((goal) => goal.GetName() == "AttackEnemyGoal"));
+            GetActionsFormSpecificGoal(GoalList.Find((goal) => goal.GetName() == "AttackEnemyGoal"));*/
         }
     }
 }

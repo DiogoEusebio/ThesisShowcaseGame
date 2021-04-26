@@ -20,7 +20,7 @@ public class AgentManager : MonoBehaviour
     void Start()
     {
         //GenerateRandomComps();
-        GenerateCompsOfTypes(1, 2);
+        GenerateCompsOfTypes(3, 2);
     }
 
     // Update is called once per frame

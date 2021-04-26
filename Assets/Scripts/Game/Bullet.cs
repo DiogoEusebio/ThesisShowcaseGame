@@ -6,6 +6,7 @@ public class Bullet : MonoBehaviour
 {
     private float Speed = 30.0f;
     private Rigidbody Rb;
+    private float bulletDamage = 25.0f;
     private Vector3 Direction;
     private Transform parent;
     // Start is called before the first frame update
@@ -55,7 +56,7 @@ public class Bullet : MonoBehaviour
             {
                 if (parent.gameObject.tag == "RedTeam" && other.gameObject.tag == "BlueTeam" || parent.gameObject.tag == "BlueTeam" && other.gameObject.tag == "RedTeam")
                 {
-                    otherAgent.TakeDamage(50.0f);
+                    otherAgent.TakeDamage(bulletDamage);
                     Destroy(this.gameObject);
                 }
             }
