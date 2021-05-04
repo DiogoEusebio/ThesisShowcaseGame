@@ -22,9 +22,11 @@ public class SphereAgent : Agent
         }
         else
         {
+            ChargeAtEnemyAndContest();
+            /*
             DebugLogGoals();
             DebugLogActions();
-
+            
             //HACK
             GoalBeingPursued = GoalList.Find((goal) => goal.GetName() == "AttackEnemyGoal");
             ActionToExecute = GoalBeingPursued.GetActionsFromGoal().Find((action) => action.GetName() == "ChargeAttackAction");
@@ -39,7 +41,7 @@ public class SphereAgent : Agent
             {
                 Debug.Log("Contesting objective");
                 ContestObjective();
-            }
+            }*/
         }
     }
 
@@ -77,5 +79,32 @@ public class SphereAgent : Agent
             GoalList.Add(new AttackEnemyGoal(transform, clossestEnemyTransform));
             GetActionsFormSpecificGoal(GoalList.Find((goal) => goal.GetName() == "AttackEnemyGoal"));*/
         }
+    }
+    void ChargeAtEnemyAndContest()
+    {
+        GoalBeingPursued = GoalList.Find((goal) => goal.GetName() == "AttackEnemyGoal");
+        ActionToExecute = GoalBeingPursued.GetActionsFromGoal().Find((action) => action.GetName() == "ChargeAttackAction");
+        attackIsOnCoolDown = ActionToExecute.GetIsOnCoolDown();
+
+        //check if there are enemies I can charge at first
+        //redundant if?
+        if (!GameObject.FindWithTag("AgentManager").GetComponent<AgentManager>().IsEnemyTeamAced(transform.gameObject.tag) && !attackIsOnCoolDown)
+        {
+            Debug.Log("Attacking enemy");
+            Action.State performState = ActionToExecute.Perform();
+            if (performState == Action.State.Executed)
+            {
+                attackIsOnCoolDown = ActionToExecute.GetIsOnCoolDown(); // = true;
+                GoalBeingPursued.SetGoalState(Goal.State.Achieved);
+            }
+            Debug.Log(performState);
+            
+        }
+        else
+        {
+            Debug.Log("enemy team aced: " + GameObject.FindWithTag("AgentManager").GetComponent<AgentManager>().IsEnemyTeamAced(transform.gameObject.tag) + " | cooldown: " + attackIsOnCoolDown);
+            Debug.Log("Contesting objective");
+        }
+        ContestObjective();
     }
 }

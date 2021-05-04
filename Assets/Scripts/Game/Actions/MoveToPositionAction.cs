@@ -27,7 +27,7 @@ public class MoveToPositionAction : Action
     {
         agentTransform.position += direction * movementSpeed * Time.deltaTime;
         //Stop condition
-        if (Vector3.Distance(agentTransform.position, targetPosition) < 0.1f)
+        if (Vector3.Distance(agentTransform.position, targetPosition) < 0.3f)
         {
             ActionState = State.Executed;
         }

@@ -20,10 +20,11 @@ public class ChargeAttackAction : Action
     //PROBLEM CHARGE HAS NO COOLDOWN, SO LOOKS LIKE A ONE SHOT KILL
     public override State Perform()
     {
-        //Debug.Log(CooldownTimer);
+        Debug.Log(CooldownTimer);
         CooldownTimer = CooldownTimer - Time.deltaTime;
         Vector3 direction = enemyTransform.position - agentTransform.position;
         direction.Normalize();
+        //if (CooldownTimer <= 0.0f && Vector3.Distance(agentTransform.position, enemyTransform.position) <= 5.0f)
         if (CooldownTimer <= 0.0f && Vector3.Distance(agentTransform.position, enemyTransform.position) <= 5.0f)
         {
             agentTransform.position += direction * ChargeSpeed * Time.deltaTime;
@@ -36,10 +37,9 @@ public class ChargeAttackAction : Action
                 //Debug.Log("GOT THE ENEMY: " + CooldownTimer);
                 return State.Executed;
             }
-            //return State.BeingExecuted;
         }
-        //else if (Vector3.Distance(agentTransform.position, enemyTransform.position) > 5.0f)
-        else
+        else if (Vector3.Distance(agentTransform.position, enemyTransform.position) > 5.0f)
+        //else  //THIS MIGHT BE THE CAUSE TO THE WALKING TO INFINITY BUG WHEN cooldowntimer <= 0 and distance <= 5 
         {
             agentTransform.position += direction * WalkUpSpeed * Time.deltaTime;
             return State.BeingExecuted;
