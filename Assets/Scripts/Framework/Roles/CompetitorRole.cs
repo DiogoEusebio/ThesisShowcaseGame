@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CompetitorRole : Role
 {
-    protected override List<GameObject> ComputeTargetAgentsList(Transform AgentTransform)
+    public override List<GameObject> ComputeTargetAgentsList(Transform AgentTransform)
     {
         List<GameObject> CompetitorsList = new List<GameObject>();
 
@@ -30,8 +30,8 @@ public class CompetitorRole : Role
                 }
             }
         }
-
-        return CompetitorsList;
+        TargetAgentsList = CompetitorsList;
+        return TargetAgentsList;
     }
 }
 

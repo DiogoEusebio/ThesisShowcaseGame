@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class TeammateRole : Role
 {
-    protected override List<GameObject> ComputeTargetAgentsList(Transform AgentTransform)
+    public override List<GameObject> ComputeTargetAgentsList(Transform AgentTransform)
     {
+        //as it is agents are teamates of themselves (consider change)
         List<GameObject> TeammatesList = new List<GameObject>();
 
         if (AgentTransform.CompareTag("BlueTeam"))
@@ -24,7 +25,7 @@ public class TeammateRole : Role
                 TeammatesList.Add(go);
             }
         }
-        
-        return TeammatesList;
+        TargetAgentsList = TeammatesList;
+        return TargetAgentsList; //consider removing this return and going void
     }
 }

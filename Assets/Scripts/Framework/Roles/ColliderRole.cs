@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class ColliderRole : Role
 {
-    protected override List<GameObject> ComputeTargetAgentsList(Transform AgentTransform)
+    public override List<GameObject> ComputeTargetAgentsList(Transform AgentTransform)
     {
-        List<GameObject> CompetitorsList = new List<GameObject>();
-        return CompetitorsList;
+        List<GameObject> CollidersList = new List<GameObject>();
+        return CollidersList;
     }
 }

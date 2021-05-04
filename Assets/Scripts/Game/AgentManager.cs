@@ -13,6 +13,7 @@ public class AgentManager : MonoBehaviour
     public uint BlueTeamSize;
     public Material RedMat;
     public Material BlueMat;
+    private RoleManager roleManager;
 
     private Vector3 RedTeamSpawnPoint = new Vector3(32.0f, 1.0f, 0.0f);
     private Vector3 BlueTeamSpawnPoint = new Vector3(-32.0f, 1.0f, 0.0f);
@@ -20,7 +21,21 @@ public class AgentManager : MonoBehaviour
     void Start()
     {
         //GenerateRandomComps();
-        GenerateCompsOfTypes(1, 2);
+        GenerateCompsOfTypes(1, 1);
+
+        List<GameObject> agentList = new List<GameObject>();
+
+        //roleManager = new RoleManager(agentList);
+        foreach(Agent ag in Blueteam.GetComponentsInChildren<Agent>())
+        {
+            agentList.Add(ag.gameObject);
+        }
+        foreach(Agent ag in Redteam.GetComponentsInChildren<Agent>())
+        {
+            agentList.Add(ag.gameObject);
+        }
+
+        roleManager = new RoleManager(agentList);
     }
 
     // Update is called once per frame
@@ -100,6 +115,9 @@ public class AgentManager : MonoBehaviour
         }
         return ClossestEnemy;
     }
+
+    //-------------------- AGENT GENERATION -------------------------//
+
     void GenerateCompsOfTypes(int blueType, int redType)
     {
         GameObject newObj;

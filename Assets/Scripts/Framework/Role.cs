@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Role : MonoBehaviour
+public abstract class Role
 {
-    private List<GameObject> TargetAgentsList;
+    protected List<GameObject> TargetAgentsList;
 
-    protected abstract List<GameObject> ComputeTargetAgentsList(Transform AgentTransform);
+    public List<GameObject> GetTargetAgents() { return TargetAgentsList; }
+    public abstract List<GameObject> ComputeTargetAgentsList(Transform AgentTransform);
 }

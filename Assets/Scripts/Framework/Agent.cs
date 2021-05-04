@@ -6,7 +6,7 @@ public class Agent : MonoBehaviour
 {
     protected List<Goal> GoalList = new List<Goal>();
     protected List<Action> ActionList = new List<Action>();
-    protected List<Role> RoleList = new List<Role>();
+    public List<Role> RoleList = new List<Role>();
     protected Goal GoalBeingPursued;
     protected Action ActionToExecute;
     private float MaxHP;
@@ -50,6 +50,7 @@ public class Agent : MonoBehaviour
     //--------------------- Gets and Sets -----------------------//
     public void SetAgentType(AgentType at) { agentType = at; }
     public AgentType GetAgentType() { return agentType; }
+    public List<Role> GetRoleList() { return RoleList; }
     public bool GetIsDead() { return isDead; }
     public void SetIsDead(bool value) { isDead = value; }
     public void SetMaxHP(float newMaxHPvalue) { MaxHP = newMaxHPvalue; }
