@@ -16,18 +16,23 @@ public class MoveToPositionAction : Action
         agentTransform = AgentTransform;
         direction = targetPosition - agentTransform.position;
         direction.Normalize();
-        if(agentTransform.TryGetComponent(out SphereAgent SAgent))
+        /*if(agentTransform.TryGetComponent(out SphereAgent SAgent))
         {
             Debug.Log(SAgent.GetAgentType());
             Debug.Log("CurrentPosition:" + agentTransform.position + "TargetPosition" + targetPosition);
-        }
+        }*/
     }
-
+    public override void UpdateDirection()
+    {
+        //Debug.Log(agentTransform.gameObject + "updating Direction");
+        direction = targetPosition - agentTransform.position;
+        direction.Normalize();
+    }
     public override State Perform()
     {
         agentTransform.position += direction * movementSpeed * Time.deltaTime;
         //Stop condition
-        if (Vector3.Distance(agentTransform.position, targetPosition) < 0.3f)
+        if (Vector3.Distance(agentTransform.position, targetPosition) < 0.5f)
         {
             ActionState = State.Executed;
         }

@@ -230,6 +230,7 @@ public class Agent : MonoBehaviour
         GoalBeingPursued = GoalList.Find((goal) => goal.GetName() == "ContestObjectiveGoal");
         PerformSimulActions();
         ActionToExecute = ActionList.Find((action) => action.GetName() == "MoveToPositionAction");
+        ActionToExecute.UpdateDirection();
         if (ActionToExecute.Perform() == Action.State.Executed)
         {
             GoalBeingPursued.SetGoalState(Goal.State.Achieved);

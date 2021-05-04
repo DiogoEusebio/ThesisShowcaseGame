@@ -10,7 +10,7 @@ public class ChargeAttackAction : Action
     private float WalkUpSpeed = 10.0f;
     private float ChargeDamage = 50.0f;
     private float CooldownTimer = 0.0f;
-    private float CooldownTime = 10.0f;
+    private float CooldownTime = 1.0f;
     public ChargeAttackAction(Transform AgentTransform, Transform EnemyTransform)
     {
         name = "ChargeAttackAction";
@@ -25,26 +25,34 @@ public class ChargeAttackAction : Action
         Vector3 direction = enemyTransform.position - agentTransform.position;
         direction.Normalize();
         //if (CooldownTimer <= 0.0f && Vector3.Distance(agentTransform.position, enemyTransform.position) <= 5.0f)
-        if (CooldownTimer <= 0.0f && Vector3.Distance(agentTransform.position, enemyTransform.position) <= 5.0f)
+        if (CooldownTimer <= 0.0f)
         {
-            agentTransform.position += direction * ChargeSpeed * Time.deltaTime;
-            //simple way to check collision, but results in single target damage even when "colliding" with multiple enemies at once
-            if(Vector3.Distance(agentTransform.position, enemyTransform.position) <= 0.49f) 
+            if(Vector3.Distance(agentTransform.position, enemyTransform.position) <= 5.0f)
             {
-                enemyTransform.GetComponent<Agent>().TakeDamage(ChargeDamage);
-                Debug.Log(CooldownTimer);
-                CooldownTimer = CooldownTime;
-                //Debug.Log("GOT THE ENEMY: " + CooldownTimer);
-                return State.Executed;
+                agentTransform.position += direction * ChargeSpeed * Time.deltaTime;
+                //simple way to check collision, but results in single target damage even when "colliding" with multiple enemies at once
+                if (Vector3.Distance(agentTransform.position, enemyTransform.position) <= 0.49f)
+                {
+                    enemyTransform.GetComponent<Agent>().TakeDamage(ChargeDamage);
+                    //Debug.Log(CooldownTimer);
+                    CooldownTimer = CooldownTime;
+                    //Debug.Log("GOT THE ENEMY: " + CooldownTimer);
+                    return State.Executed;
+                }
+                return State.BeingExecuted;
+            }
+            else
+            {
+                agentTransform.position += direction * WalkUpSpeed * Time.deltaTime;
+                return State.BeingExecuted;
             }
         }
-        else if (Vector3.Distance(agentTransform.position, enemyTransform.position) > 5.0f)
-        //else  //THIS MIGHT BE THE CAUSE TO THE WALKING TO INFINITY BUG WHEN cooldowntimer <= 0 and distance <= 5 
+        //else if (Vector3.Distance(agentTransform.position, enemyTransform.position) > 5.0f)
+        else
         {
             agentTransform.position += direction * WalkUpSpeed * Time.deltaTime;
             return State.BeingExecuted;
         }
-        return State.NotBeingExecuted;
     }
     public override bool GetIsOnCoolDown()
     {
@@ -53,5 +61,9 @@ public class ChargeAttackAction : Action
             return false;
         }
         return true;
+    }
+    public override void UpdateCooldown()
+    {
+        CooldownTimer = CooldownTimer - Time.deltaTime;
     }
 }

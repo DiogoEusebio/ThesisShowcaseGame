@@ -91,17 +91,20 @@ public class SphereAgent : Agent
         if (!GameObject.FindWithTag("AgentManager").GetComponent<AgentManager>().IsEnemyTeamAced(transform.gameObject.tag) && !attackIsOnCoolDown)
         {
             Debug.Log("Attacking enemy");
+            //problem: when not performing the cool down is not refreshed
+            //always need to refresh the cool down
             Action.State performState = ActionToExecute.Perform();
             if (performState == Action.State.Executed)
             {
                 attackIsOnCoolDown = ActionToExecute.GetIsOnCoolDown(); // = true;
                 GoalBeingPursued.SetGoalState(Goal.State.Achieved);
             }
-            Debug.Log(performState);
+            //Debug.Log(performState);
             
         }
         else
         {
+            ActionToExecute.UpdateCooldown();
             Debug.Log("enemy team aced: " + GameObject.FindWithTag("AgentManager").GetComponent<AgentManager>().IsEnemyTeamAced(transform.gameObject.tag) + " | cooldown: " + attackIsOnCoolDown);
             Debug.Log("Contesting objective");
         }
