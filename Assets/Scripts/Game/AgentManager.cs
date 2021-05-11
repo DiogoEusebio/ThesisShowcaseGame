@@ -9,14 +9,18 @@ public class AgentManager : MonoBehaviour
     public GameObject ConePrefab;
     public GameObject Redteam;
     public GameObject Blueteam;
+    public GameObject Greenteam;
     public uint RedTeamSize;
     public uint BlueTeamSize;
+    public uint GreenTeamSize;
     public Material RedMat;
     public Material BlueMat;
+    public Material GreenMat;
     private RoleManager roleManager;
 
-    private Vector3 RedTeamSpawnPoint = new Vector3(32.0f, 1.0f, 0.0f);
-    private Vector3 BlueTeamSpawnPoint = new Vector3(-32.0f, 1.0f, 0.0f);
+    private Vector3 RedTeamSpawnPoint = new Vector3(12.87f, 1.0f, 14.77f);
+    private Vector3 BlueTeamSpawnPoint = new Vector3(-12.87f, 1.0f, 14.77f);
+    private Vector3 GreenTeamSpawnPoint = new Vector3(0.0f, 1.0f, -7.0f);
     // Start is called before the first frame update
     void Start()
     {
@@ -45,15 +49,24 @@ public class AgentManager : MonoBehaviour
     }
     public bool IsEnemyTeamAced(string AgentTag)
     {
-        if(AgentTag == "BlueTeam")
+        if (AgentTag == "BlueTeam")
         {
-            return GetNumberOfDeadEnemies("RedTeam") == Redteam.transform.childCount;
+            if (GetNumberOfDeadEnemies("RedTeam") == Redteam.transform.childCount && GetNumberOfDeadEnemies("GreenTeam") == Greenteam.transform.childCount)
+                return true;
         }
-        else
+        else if (AgentTag == "RedTeam")
         {
-            return GetNumberOfDeadEnemies("BlueTeam") == Blueteam.transform.childCount;
+            if (GetNumberOfDeadEnemies("BlueTeam") == Blueteam.transform.childCount && GetNumberOfDeadEnemies("GreenTeam") == Greenteam.transform.childCount)
+                return true;
         }
+        else if (AgentTag == "GreenTeam")
+        {
+            if (GetNumberOfDeadEnemies("RedTeam") == Blueteam.transform.childCount && GetNumberOfDeadEnemies("BlueTeam") == Blueteam.transform.childCount)
+                return true;
+        }
+        return false;
     }
+
     public int GetNumberOfDeadEnemies(string EnemyTeamTag)
     {
         int numberOfDeadEnemies = 0;
@@ -70,6 +83,16 @@ public class AgentManager : MonoBehaviour
         if(EnemyTeamTag == "RedTeam")
         {
             foreach (Transform enemy in Redteam.GetComponentInChildren<Transform>())
+            {
+                if (enemy.GetComponent<Agent>().GetIsDead())
+                {
+                    numberOfDeadEnemies++;
+                }
+            }
+        }
+        if (EnemyTeamTag == "GreenTeam")
+        {
+            foreach (Transform enemy in Greenteam.GetComponentInChildren<Transform>())
             {
                 if (enemy.GetComponent<Agent>().GetIsDead())
                 {
@@ -97,10 +120,61 @@ public class AgentManager : MonoBehaviour
                     }
                 }
             }
+            foreach (Transform enemy in Greenteam.GetComponentInChildren<Transform>())
+            {
+                if (enemy.GetComponent<Agent>().GetIsDead() == false)
+                {
+                    float newDistance = Vector3.Distance(agentTransform.position, enemy.position);
+                    if (newDistance < distance)
+                    {
+                        ClossestEnemy = enemy;
+                        distance = newDistance;
+                    }
+                }
+            }
         }
         else if (MyTeam == "RedTeam")
         {
             foreach (Transform enemy in Blueteam.GetComponentInChildren<Transform>())
+            {
+                if (enemy.GetComponent<Agent>().GetIsDead() == false)
+                {
+                    float newDistance = Vector3.Distance(agentTransform.position, enemy.position);
+                    if (newDistance < distance)
+                    {
+                        ClossestEnemy = enemy;
+                        distance = newDistance;
+                    }
+                }
+            }
+            foreach (Transform enemy in Greenteam.GetComponentInChildren<Transform>())
+            {
+                if (enemy.GetComponent<Agent>().GetIsDead() == false)
+                {
+                    float newDistance = Vector3.Distance(agentTransform.position, enemy.position);
+                    if (newDistance < distance)
+                    {
+                        ClossestEnemy = enemy;
+                        distance = newDistance;
+                    }
+                }
+            }
+        }
+        else if (MyTeam == "GreenTeam")
+        {
+            foreach (Transform enemy in Blueteam.GetComponentInChildren<Transform>())
+            {
+                if (enemy.GetComponent<Agent>().GetIsDead() == false)
+                {
+                    float newDistance = Vector3.Distance(agentTransform.position, enemy.position);
+                    if (newDistance < distance)
+                    {
+                        ClossestEnemy = enemy;
+                        distance = newDistance;
+                    }
+                }
+            }
+            foreach (Transform enemy in Redteam.GetComponentInChildren<Transform>())
             {
                 if (enemy.GetComponent<Agent>().GetIsDead() == false)
                 {
@@ -148,6 +222,12 @@ public class AgentManager : MonoBehaviour
             newObj = GenerateAgentOfRandomType(BlueTeamSpawnPoint, Blueteam.transform);
             newObj.GetComponent<Renderer>().material = BlueMat;
             newObj.tag = "BlueTeam";
+        }
+        for (uint i = 0; i < GreenTeamSize; i++)
+        {
+            newObj = GenerateAgentOfRandomType(GreenTeamSpawnPoint, Greenteam.transform);
+            newObj.GetComponent<Renderer>().material = GreenMat;
+            newObj.tag = "GreenTeam";
         }
     }
     GameObject GenerateAgentOfRandomType(Vector3 spawnPoint, Transform parent)

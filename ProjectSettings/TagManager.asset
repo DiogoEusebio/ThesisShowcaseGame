@@ -6,6 +6,9 @@ TagManager:
   tags:
   - RedTeam
   - BlueTeam
+  - Objective
+  - AgentManager
+  - GreenTeam
   layers:
   - Default
   - TransparentFX

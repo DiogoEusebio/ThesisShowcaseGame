@@ -161,7 +161,7 @@ public class Agent : MonoBehaviour
             isDead = false;
             if (transform.gameObject.CompareTag("BlueTeam"))
             {
-                transform.position = new Vector3(-32.0f, 1.0f, 0.0f); //Hack: copy pasted value from AgentManager, consider doing this there/acess the variable
+                transform.position = new Vector3(-12.87f, 1.0f, 14.77f); //Hack: copy pasted value from AgentManager, consider doing this there/acess the variable
                 SetMaxHP(100.0f);
                 SetCurrentHPtoMax();
                 GenerateBasicAgentGoals();
@@ -169,7 +169,15 @@ public class Agent : MonoBehaviour
             }
             else if (transform.gameObject.CompareTag("RedTeam"))
             {
-                transform.position = new Vector3(32.0f, 1.0f, 0.0f); //Hack: copy pasted value from AgentManager, consider doing this there/acess the variable
+                transform.position = new Vector3(12.87f, 1.0f, 14.77f); //Hack: copy pasted value from AgentManager, consider doing this there/acess the variable
+                SetMaxHP(100.0f);
+                SetCurrentHPtoMax();
+                GenerateBasicAgentGoals(); //problem here
+                GetActionsFromGoals();
+            }
+            else if (transform.gameObject.CompareTag("GreenTeam"))
+            {
+                transform.position = new Vector3(0.0f, 1.0f, -7.0f); //Hack: copy pasted value from AgentManager, consider doing this there/acess the variable
                 SetMaxHP(100.0f);
                 SetCurrentHPtoMax();
                 GenerateBasicAgentGoals(); //problem here
