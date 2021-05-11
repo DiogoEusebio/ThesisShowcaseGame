@@ -20,8 +20,8 @@ public class AgentManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //GenerateRandomComps();
-        GenerateCompsOfTypes(1, 1);
+        GenerateRandomComps();
+        //GenerateCompsOfTypes(1, 1);
 
         List<GameObject> agentList = new List<GameObject>();
 

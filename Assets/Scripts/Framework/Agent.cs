@@ -57,7 +57,7 @@ public class Agent : MonoBehaviour
     public void SetCurrentHPtoMax() { CurrentHP = MaxHP; }
     public void TakeDamage(float dmg)
     {
-        Debug.Log("current Hp: " + CurrentHP);
+        //Debug.Log("current Hp: " + CurrentHP);
         CurrentHP -= dmg;
         if(CurrentHP <= 0)
         {
