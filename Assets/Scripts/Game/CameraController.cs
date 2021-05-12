@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    private float camSpeed = 0.5f;
+    private float camSpeed = 0.05f;
     private float camHeight = 25.0f;
     public GameObject Player;
     // Start is called before the first frame update
@@ -17,8 +17,8 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        playerCamera();
-        //freecamera();
+        //playerCamera();
+        freecamera();
     }
     void playerCamera()
     {

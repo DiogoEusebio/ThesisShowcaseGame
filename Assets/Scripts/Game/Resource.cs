@@ -19,6 +19,6 @@ public class Resource : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log("resource collision " + other);
-        transform.position = new Vector3(2.0f, 5.0f, 0.0f);
+        
     }
 }
