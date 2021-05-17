@@ -209,6 +209,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 157537890}
+  - component: {fileID: 157537891}
   m_Layer: 0
   m_Name: ResourceBag
   m_TagString: Untagged
@@ -230,6 +231,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &157537891
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 157537889}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4713b588a48496f4e9f3d395d73f9179, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ResourcePrefab: {fileID: 3847780936934155647, guid: e4f55393a99ba25439d8c12ca5b434f0,
+    type: 3}
 --- !u!1 &161962602
 GameObject:
   m_ObjectHideFlags: 0
@@ -418,7 +433,6 @@ GameObject:
   m_Component:
   - component: {fileID: 314126620}
   - component: {fileID: 314126621}
-  - component: {fileID: 314126622}
   m_Layer: 0
   m_Name: Arena
   m_TagString: AgentManager
@@ -464,6 +478,8 @@ MonoBehaviour:
     type: 3}
   ConePrefab: {fileID: 8989516420576922702, guid: c5404e18478b01f4297f5ff2701436f4,
     type: 3}
+  TetraHedronPrefab: {fileID: 3888236114646786059, guid: 6b02f670a7ec3e045a5065bd7975c5f3,
+    type: 3}
   Redteam: {fileID: 1857920055}
   Blueteam: {fileID: 949528491}
   Greenteam: {fileID: 1528433886}
@@ -473,20 +489,6 @@ MonoBehaviour:
   RedMat: {fileID: 2100000, guid: d7324fc0609580f46994727178d65584, type: 2}
   BlueMat: {fileID: 2100000, guid: 38a9dbd64a2357b4fa5a27880b3327bd, type: 2}
   GreenMat: {fileID: 2100000, guid: d87b7651728a9a14292c9bd47f5b17ba, type: 2}
---- !u!114 &314126622
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 314126619}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4713b588a48496f4e9f3d395d73f9179, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ResourcePrefab: {fileID: 3847780936934155647, guid: e4f55393a99ba25439d8c12ca5b434f0,
-    type: 3}
 --- !u!1 &346291294
 GameObject:
   m_ObjectHideFlags: 0

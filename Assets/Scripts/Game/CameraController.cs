@@ -6,11 +6,13 @@ public class CameraController : MonoBehaviour
 {
     private float camSpeed = 0.05f;
     private float camHeight = 25.0f;
+    private float camXaxis = 0.0f;
+    private float camZaxis = 0.0f;
     public GameObject Player;
     // Start is called before the first frame update
     void Start()
     {
-        transform.position = new Vector3(0.0f, 25.0f, 0.0f);
+        transform.position = new Vector3(camXaxis, camHeight, camZaxis);
         transform.LookAt(new Vector3(0.0f, -1.0f, -1.0f));
     }
 
@@ -36,19 +38,19 @@ public class CameraController : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.W))
         {
-            transform.position += new Vector3(0.0f, 0.0f, -1.0f * camSpeed);
+            camZaxis -= 1 * camSpeed;
         }
         if (Input.GetKey(KeyCode.S))
         {
-            transform.position += new Vector3(0.0f, 0.0f, 1.0f * camSpeed);
+            camZaxis += 1 * camSpeed;
         }
         if (Input.GetKey(KeyCode.A))
         {
-            transform.position += new Vector3(1.0f * camSpeed, 0.0f, 0.0f);
+            camXaxis += 1 * camSpeed;
         }
         if (Input.GetKey(KeyCode.D))
         {
-            transform.position += new Vector3(-1.0f * camSpeed, 0.0f, 0.0f);
+            camXaxis -= 1 * camSpeed;
         }
         if (Input.GetAxis("Mouse ScrollWheel") < 0.0f)
         {
@@ -58,5 +60,6 @@ public class CameraController : MonoBehaviour
         {
             camHeight--;
         }
+        transform.position = new Vector3(camXaxis, camHeight, camZaxis);
     }
 }

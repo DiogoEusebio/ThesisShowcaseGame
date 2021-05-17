@@ -18,7 +18,8 @@ public class Agent : MonoBehaviour
     {
         Cube,
         Sphere,
-        Cone
+        Cone,
+        Tetrahedron
     }
     private AgentType agentType;
     // Start is called before the first frame update
