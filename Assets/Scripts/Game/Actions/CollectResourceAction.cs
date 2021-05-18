@@ -48,7 +48,7 @@ public class CollectResourceAction : Action
                 targetPosition = r.transform.position;
             }
         }
-        Debug.Log(targetPosition);
+        //Debug.Log(targetPosition);
         return targetPosition;
     }
     public override void UpdateDirection()
@@ -56,6 +56,11 @@ public class CollectResourceAction : Action
         //Debug.Log(agentTransform.gameObject + "updating Direction");
         direction = targetPosition - AgentTransform.position;
         direction.Normalize();
-        AgentTransform.LookAt(direction);
+        Debug.Log(direction);
+        //quick "look at" action incorporated
+        var lookPos = targetPosition - AgentTransform.position;
+        lookPos.y = 0;
+        var rotation = Quaternion.LookRotation(lookPos);
+        AgentTransform.rotation = Quaternion.Slerp(AgentTransform.rotation, rotation, Time.deltaTime * 10);
     }
 }

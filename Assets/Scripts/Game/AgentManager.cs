@@ -26,7 +26,7 @@ public class AgentManager : MonoBehaviour
     void Start()
     {
         //GenerateRandomComps();
-        GenerateCompsOfTypes(3, 4, 3);
+        GenerateCompsOfTypes(4, 1, 2);
 
         List<GameObject> agentList = new List<GameObject>();
 
@@ -282,7 +282,7 @@ public class AgentManager : MonoBehaviour
         }
         else
         {
-            newObj = Instantiate(TetraHedronPrefab, spawnPoint, Quaternion.identity, parent);
+            newObj = Instantiate(TetraHedronPrefab, spawnPoint + new Vector3(0,1,0), Quaternion.identity, parent);
             newObj.GetComponent<Agent>().SetAgentType(Agent.AgentType.Tetrahedron);
         }
         newObj.SetActive(true);

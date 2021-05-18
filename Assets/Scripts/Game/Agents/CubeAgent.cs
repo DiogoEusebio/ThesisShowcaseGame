@@ -21,7 +21,8 @@ public class CubeAgent : Agent
         }
         else
         {
-            ContestObjective();
+            //ContestObjective();
+            CaptureFlag();
         }
     }
     protected override void GenerateBasicAgentGoals()
@@ -30,6 +31,7 @@ public class CubeAgent : Agent
         //Debug.Log(objective);
         Vector3 ObjPos = objective.transform.position;
         //Debug.Log(ObjPos);
-        GoalList.Add(new ContestObjectiveGoal(transform, new Vector3(Random.Range(ObjPos.x - 3.0f, ObjPos.x + 3.0f), 1.0f, Random.Range(ObjPos.z - 3.0f, ObjPos.z + 3.0f))));
+        //GoalList.Add(new ContestObjectiveGoal(transform, new Vector3(Random.Range(ObjPos.x - 3.0f, ObjPos.x + 3.0f), 1.0f, Random.Range(ObjPos.z - 3.0f, ObjPos.z + 3.0f))));
+        GoalList.Add(new CaptureFlagGoal(transform));
     }
 }

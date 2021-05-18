@@ -16,12 +16,12 @@ public class RoleManager
         SetTeammateRoles();
         SetCompetitorRoles();
         //Debug
-        Debug.Log("Agents and their relations with the first agent that was created");
+        //Debug.Log("Agents and their relations with the first agent that was created");
         foreach (Role r in agentList[0].GetComponent<Agent>().GetRoleList())
         {
             foreach (GameObject go in r.GetTargetAgents())
             {
-                Debug.Log(go + " | " + go.transform.tag + " | " + r);
+                //Debug.Log(go + " | " + go.transform.tag + " | " + r);
             }
         }
     }

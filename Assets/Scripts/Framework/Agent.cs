@@ -252,4 +252,30 @@ public class Agent : MonoBehaviour
             GetActionsFormSpecificGoal(GoalList.Find((goal) => goal.GetName() == "ContestObjectiveGoal"));
         }
     }
+    public void CaptureFlag()
+    {
+        GoalBeingPursued = GoalList.Find((goal) => goal.GetName() == "CaptureFlagGoal");
+        ActionToExecute = ActionList.Find((action) => action.GetName() == "CaptureFlagAction");
+        //DebugLogActions();
+        //Debug.Log(GoalBeingPursued + " | " + ActionToExecute);
+        ActionToExecute.UpdateDirection();
+        if (ActionToExecute.GetClosestFlagPosition() != new Vector3(1000f, 1000f, 1000f))
+        {
+            if (ActionToExecute.Perform() == Action.State.Executed)
+            {
+                GoalBeingPursued.SetGoalState(Goal.State.Achieved);
+                RemoveAchivedGoal(GoalBeingPursued);
+                RemoveActionsAssociatedToGoal(GoalBeingPursued);
+                //GameObject objective = GameObject.FindWithTag("Objective"); //remove later and add look at resource action
+                //Vector3 ObjPos = objective.transform.position;
+                GoalList.Add(new CaptureFlagGoal(transform));
+                GetActionsFormSpecificGoal(GoalList.Find((goal) => goal.GetName() == "CaptureFlagGoal"));
+                Debug.Log("Flag Captured");
+            }
+        }
+        else
+        {
+            Debug.Log("Waiting for Flags to spawn");
+        }
+    }
 }

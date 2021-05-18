@@ -10,7 +10,6 @@ public class TetrahedronAgent : Agent
         SetCurrentHPtoMax();
         GenerateBasicAgentGoals();
         GetActionsFromGoals();
-        Debug.Log(GetAgentType());
     }
 
     protected override void Update()
@@ -23,16 +22,18 @@ public class TetrahedronAgent : Agent
         else
         {
             GatherResources();
+            //CaptureFlag();
         }
     }
     protected override void GenerateBasicAgentGoals()
     {
-        GameObject objective = GameObject.FindWithTag("Objective");
+        //GameObject objective = GameObject.FindWithTag("Objective");
         //Debug.Log(objective);
-        Vector3 ObjPos = objective.transform.position;
+        //Vector3 ObjPos = objective.transform.position;
         //Debug.Log(ObjPos);
         //GoalList.Add(new ContestObjectiveGoal(transform, new Vector3(Random.Range(ObjPos.x - 3.0f, ObjPos.x + 3.0f), 1.0f, Random.Range(ObjPos.z - 3.0f, ObjPos.z + 3.0f))));
         GoalList.Add(new CollectResourcesGoal(transform));
+        //GoalList.Add(new CaptureFlagGoal(transform));
     }
     private void GatherResources()
     {
@@ -53,6 +54,9 @@ public class TetrahedronAgent : Agent
                 Debug.Log("Collected Resorce");
             }
         }
-        Debug.Log("Waiting for resources to spawn");
+        else
+        {
+            Debug.Log("Waiting for resources to spawn");
+        }
     }
 }

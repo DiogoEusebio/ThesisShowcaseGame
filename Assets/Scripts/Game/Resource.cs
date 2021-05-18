@@ -5,13 +5,10 @@ using UnityEngine;
 public class Resource : MonoBehaviour
 {
     private bool collected = false;
-    // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("Hello!");
     }
 
-    // Update is called once per frame
     void Update()
     {
 
@@ -28,12 +25,20 @@ public class Resource : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (!IsCollected())
+        if (other.TryGetComponent(out Agent Agent))
         {
-            collected = true;
-            transform.parent = other.transform;
-            transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
-            Debug.Log("resource collision " + other);
+            if (Agent.GetAgentType() == Agent.AgentType.Tetrahedron)
+            {
+                if (!IsCollected())
+                {
+                    collected = true;
+                    ResourceManager RM = transform.parent.GetComponent<ResourceManager>();
+                    RM.UpdateCooldownFlag(this.transform.position);
+                    transform.parent = other.transform;
+                    transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
+                    Debug.Log("resource collision " + other);
+                }
+            }
         }
     }
 }
