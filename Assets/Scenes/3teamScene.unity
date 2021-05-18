@@ -370,7 +370,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 161962602}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalPosition: {x: 0, y: 19.89, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -530,8 +530,8 @@ MonoBehaviour:
   Redteam: {fileID: 1857920055}
   Blueteam: {fileID: 949528491}
   Greenteam: {fileID: 1528433886}
-  RedTeamSize: 2
-  BlueTeamSize: 2
+  RedTeamSize: 1
+  BlueTeamSize: 0
   GreenTeamSize: 0
   RedMat: {fileID: 2100000, guid: d7324fc0609580f46994727178d65584, type: 2}
   BlueMat: {fileID: 2100000, guid: 38a9dbd64a2357b4fa5a27880b3327bd, type: 2}
@@ -2411,7 +2411,7 @@ GameObject:
   - component: {fileID: 1969392842}
   - component: {fileID: 1969392841}
   m_Layer: 0
-  m_Name: ResourcePoint (1)
+  m_Name: ResourcePoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

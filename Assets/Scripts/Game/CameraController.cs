@@ -5,15 +5,16 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     private float camSpeed = 0.05f;
-    private float camHeight = 25.0f;
+    private float camHeight = 35.0f;
     private float camXaxis = 0.0f;
-    private float camZaxis = 0.0f;
+    private float camZaxis = 11.5f;
     public GameObject Player;
     // Start is called before the first frame update
     void Start()
     {
+        transform.position = new Vector3(0, 0, 0);
+        transform.LookAt(new Vector3(0.0f, -1.0f, -0.1f));
         transform.position = new Vector3(camXaxis, camHeight, camZaxis);
-        transform.LookAt(new Vector3(0.0f, -1.0f, -1.0f));
     }
 
     // Update is called once per frame

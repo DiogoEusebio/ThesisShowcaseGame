@@ -198,19 +198,19 @@ public class AgentManager : MonoBehaviour
         GameObject newObj;
         for (uint i = 0; i < RedTeamSize; i++)
         {
-            newObj = GenerateAgentOfType(RedTeamSpawnPoint, Redteam.transform, redType);
+            newObj = GenerateAgentOfType(RedTeamSpawnPoint + new Vector3(Random.Range(-2.5f, 2.5f), 0.0f, Random.Range(-2.5f, 2.5f)), Redteam.transform, redType);
             newObj.GetComponent<Renderer>().material = RedMat;
             newObj.tag = "RedTeam";
         }
         for (uint i = 0; i < BlueTeamSize; i++)
         {
-            newObj = GenerateAgentOfType(BlueTeamSpawnPoint, Blueteam.transform, blueType);
+            newObj = GenerateAgentOfType(BlueTeamSpawnPoint + new Vector3(Random.Range(-2.5f, 2.5f), 0.0f, Random.Range(-2.5f, 2.5f)), Blueteam.transform, blueType);
             newObj.GetComponent<Renderer>().material = BlueMat;
             newObj.tag = "BlueTeam";
         }
         for (uint i = 0; i < GreenTeamSize; i++)
         {
-            newObj = GenerateAgentOfType(GreenTeamSpawnPoint, Greenteam.transform, greenType);
+            newObj = GenerateAgentOfType(GreenTeamSpawnPoint + new Vector3(Random.Range(-2.5f, 2.5f), 0.0f, Random.Range(-2.5f, 2.5f)), Greenteam.transform, greenType);
             newObj.GetComponent<Renderer>().material = GreenMat;
             newObj.tag = "GreenTeam";
         }

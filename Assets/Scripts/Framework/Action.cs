@@ -19,8 +19,9 @@ public abstract class Action
     }
     public abstract State Perform();
 
-    //------ virtual methods to avoid casting to subclass ---- //
+    //------ virtual/abstract methods to avoid casting to subclass ---- //
     public virtual bool GetIsOnCoolDown() { return false; }
     public virtual void UpdateDirection() { /*do nothing*/ }
     public virtual void UpdateCooldown() { /*do nothing*/ }
+    public virtual Vector3 GetClosestResorcePosition() { Vector3 err = new Vector3(1000f, 1000f, 1000f); return err; }
 }
