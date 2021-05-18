@@ -24,7 +24,7 @@ public class ResourceManager : MonoBehaviour
     }
     GameObject GenerateNewResource(Vector3 spawnPoint)
     {
-        Debug.Log(spawnPoint);
+        //Debug.Log(spawnPoint);
         Transform parent = GameObject.Find("ResourceBag").transform;
         GameObject newObj = Instantiate(ResourcePrefab, spawnPoint, Quaternion.identity, parent);
         return newObj;

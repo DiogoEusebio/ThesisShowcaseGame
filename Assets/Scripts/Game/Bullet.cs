@@ -54,7 +54,9 @@ public class Bullet : MonoBehaviour
         {
             if(otherAgent.GetAgentType() != Agent.AgentType.Cube)
             {
-                if (parent.gameObject.tag == "RedTeam" && other.gameObject.tag == "BlueTeam" || parent.gameObject.tag == "BlueTeam" && other.gameObject.tag == "RedTeam")
+                if (parent.gameObject.tag == "RedTeam" && other.gameObject.tag == "BlueTeam" || parent.gameObject.tag == "RedTeam" && other.gameObject.tag == "GreenTeam" ||
+                    parent.gameObject.tag == "BlueTeam" && other.gameObject.tag == "RedTeam" || parent.gameObject.tag == "BlueTeam" && other.gameObject.tag == "GreenTeam" ||
+                    parent.gameObject.tag == "GreenTeam" && other.gameObject.tag == "RedTeam" || parent.gameObject.tag == "GreenTeam" && other.gameObject.tag == "BlueTeam")
                 {
                     otherAgent.TakeDamage(bulletDamage);
                     Destroy(this.gameObject);

@@ -6,10 +6,11 @@ public class TetrahedronAgent : Agent
 {
     protected override void Start()
     {
-        SetMaxHP(100.0f);
+        SetMaxHP(50.0f);
         SetCurrentHPtoMax();
         GenerateBasicAgentGoals();
         GetActionsFromGoals();
+        Debug.Log(GetAgentType());
     }
 
     protected override void Update()
