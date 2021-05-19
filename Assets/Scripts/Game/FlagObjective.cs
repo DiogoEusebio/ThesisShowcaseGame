@@ -23,10 +23,12 @@ public class FlagObjective : MonoBehaviour
     public bool IsCaptured() { return captured; }
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Flag Collision");
+        Debug.Log("Flag Collision: " + other);
         if (other.TryGetComponent(out Agent Agent))
         {
-            if (Agent.GetAgentType() == Agent.AgentType.Tetrahedron)
+            if (Agent.HasCpaturedFlag())
+                Agent.SetCapturedFlag(this.transform);
+            if (Agent.GetAgentType() == Agent.AgentType.Cube)
             {
                 if (!IsCaptured())
                 {
@@ -37,9 +39,5 @@ public class FlagObjective : MonoBehaviour
                 }
             }
         }
-    }
-    void OnTriggerStay(Collider other)
-    {
-        Debug.Log("STAY");
     }
 }

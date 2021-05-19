@@ -56,7 +56,7 @@ public class CollectResourceAction : Action
         //Debug.Log(agentTransform.gameObject + "updating Direction");
         direction = targetPosition - AgentTransform.position;
         direction.Normalize();
-        Debug.Log(direction);
+        //Debug.Log(direction);
         //quick "look at" action incorporated
         var lookPos = targetPosition - AgentTransform.position;
         lookPos.y = 0;

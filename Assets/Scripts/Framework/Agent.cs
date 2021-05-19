@@ -13,6 +13,7 @@ public class Agent : MonoBehaviour
     private float CurrentHP;
     private bool isDead = false;
     protected float respawnTimer;
+    protected Transform capturedFlag;
 
     public enum AgentType
     {
@@ -64,6 +65,18 @@ public class Agent : MonoBehaviour
         {
             KillAgent();
         }
+    }
+    public bool HasCpaturedFlag()
+    {
+        if (capturedFlag == null)
+        {
+            return false;
+        }
+        return true;
+    }
+    public void SetCapturedFlag(Transform flag)
+    {
+        capturedFlag = flag;
     }
     public void GetActionsFromGoals()
     {

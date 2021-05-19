@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 4773886881128362284}
   - component: {fileID: 8315328205727634872}
   - component: {fileID: 5897805289829418855}
-  - component: {fileID: 3942142541305707429}
+  - component: {fileID: 6506019403918726477}
+  - component: {fileID: 5324390940416174411}
   m_Layer: 0
   m_Name: Flag
   m_TagString: Untagged
@@ -93,8 +94,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f020c4e4a31e664b8128e5ecc75a3fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!65 &3942142541305707429
-BoxCollider:
+--- !u!54 &6506019403918726477
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1450511960925903709}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!64 &5324390940416174411
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -103,6 +120,7 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.6000001, y: 4, z: 0.9152634}
-  m_Center: {x: -0.7, y: 2, z: 0.041057244}
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -2432090755550338912, guid: ffd54fdf00d7bef40bfd790990596922, type: 3}
