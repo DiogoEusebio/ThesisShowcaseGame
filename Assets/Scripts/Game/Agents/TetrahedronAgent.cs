@@ -56,7 +56,7 @@ public class TetrahedronAgent : Agent
         }
         else
         {
-            Debug.Log("Waiting for resources to spawn");
+            //Debug.Log("Waiting for resources to spawn");
         }
     }
 }

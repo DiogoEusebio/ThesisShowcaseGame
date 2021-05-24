@@ -53,6 +53,7 @@ public class Agent : MonoBehaviour
     public void SetAgentType(AgentType at) { agentType = at; }
     public AgentType GetAgentType() { return agentType; }
     public List<Role> GetRoleList() { return RoleList; }
+    public List<Action> GetActionList(){ return ActionList; }
     public bool GetIsDead() { return isDead; }
     public void SetIsDead(bool value) { isDead = value; }
     public void SetMaxHP(float newMaxHPvalue) { MaxHP = newMaxHPvalue; }
@@ -66,7 +67,7 @@ public class Agent : MonoBehaviour
             KillAgent();
         }
     }
-    public bool HasCpaturedFlag()
+    public bool HasCapturedFlag()
     {
         if (capturedFlag == null)
         {

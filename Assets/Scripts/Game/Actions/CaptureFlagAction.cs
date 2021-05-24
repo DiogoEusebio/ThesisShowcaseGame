@@ -16,21 +16,38 @@ public class CaptureFlagAction : Action
         AgentTransform = Agent;
         targetPosition = GetClosestFlagPosition();
         direction = targetPosition - AgentTransform.position;
-        direction.y = 1;
+        direction.y = 0;
         direction.Normalize();
     }
     public override State Perform()
     {
         if (targetPosition == null) { return State.NotBeingExecuted; }
+        Debug.Log(CapturedFlag + " | " + targetPosition);
         AgentTransform.position += direction * movementSpeed * Time.deltaTime;
-        //Stop condition
-        if (Vector3.Distance(AgentTransform.position, targetPosition) < 0.2f)
+        //Capturing Flag Condition
+        if (Vector3.Distance(AgentTransform.position, targetPosition) < 0.2f && CapturedFlag == null)
         {
+            //not really the true stop condition
+            ActionState = State.BeingExecuted;
+        }
+        //Returning Flag Condition
+        if(Vector3.Distance(AgentTransform.position, targetPosition) < 0.2f && CapturedFlag != null)
+        {
+            Debug.Log("RETURNING TO BASE");
+            DropFlag();
             ActionState = State.Executed;
         }
         return ActionState;
     }
-    public void SetCapturedFlag(Transform flag) { CapturedFlag = flag; }
+    public override void SetCapturedFlag(Transform flag){
+        CapturedFlag = flag;
+        Debug.Log("Setting captured flag");
+        //this method also updates the agent target position
+        //as now having the flag we want to return it to our base
+        targetPosition = GetBasePosition();
+        Debug.Log(targetPosition);
+        UpdateDirection();
+    }
     public override Vector3 GetClosestFlagPosition()
     {
         float MinDistance = 10000.0f; //consider changing to max float
@@ -120,6 +137,19 @@ public class CaptureFlagAction : Action
         //Debug.Log(targetPosition + " | " + AgentTransform.position);
         return targetPosition;
     }
+
+    public Vector3 GetBasePosition()
+    {
+        if (AgentTransform.CompareTag("RedTeam")) { return new Vector3(12.87f, 1.0f, 14.77f); }
+        if (AgentTransform.CompareTag("BlueTeam")) { return new Vector3(-12.87f, 1.0f, 14.77f); }
+        if (AgentTransform.CompareTag("GreenTeam")) { return new Vector3(0.0f, 1.0f, -7.0f); }
+        else
+        {
+            //THIS SHOULD NEVER HAPPEN
+            Debug.Log("ERR: AGENT AS NO TAG");
+            return new Vector3(0, 0, 0);
+        }
+    }
     public override void UpdateDirection()
     {
         //Debug.Log(agentTransform.gameObject + "updating Direction");
@@ -133,5 +163,5 @@ public class CaptureFlagAction : Action
         var rotation = Quaternion.LookRotation(lookPos);
         AgentTransform.rotation = Quaternion.Slerp(AgentTransform.rotation, rotation, Time.deltaTime * 10);
     }
-    public void DropFlag() { }
+    public void DropFlag() { Debug.Log("Should be droping flag"); }
 }

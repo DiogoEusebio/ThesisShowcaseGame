@@ -36,7 +36,7 @@ public class Resource : MonoBehaviour
                     RM.UpdateCooldownFlag(this.transform.position);
                     transform.parent = other.transform;
                     transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
-                    Debug.Log("resource collision " + other);
+                    //Debug.Log("resource collision " + other);
                 }
             }
         }

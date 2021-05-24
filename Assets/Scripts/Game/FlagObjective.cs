@@ -8,7 +8,7 @@ public class FlagObjective : MonoBehaviour
     private Transform CaptureAgent = null;
     void Start()
     {
-        Debug.Log("FLAG EXISTS");
+        //Debug.Log("FLAG EXISTS");
     }
 
     // Update is called once per frame
@@ -23,19 +23,28 @@ public class FlagObjective : MonoBehaviour
     public bool IsCaptured() { return captured; }
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Flag Collision: " + other);
+        //Debug.Log("Flag Collision: " + other);
         if (other.TryGetComponent(out Agent Agent))
         {
-            if (Agent.HasCpaturedFlag())
-                Agent.SetCapturedFlag(this.transform);
-            if (Agent.GetAgentType() == Agent.AgentType.Cube)
+            if (!Agent.HasCapturedFlag())
             {
-                if (!IsCaptured())
+                Agent.SetCapturedFlag(this.transform);
+                if (Agent.GetAgentType() == Agent.AgentType.Cube)
                 {
-                    //assign agent to captureAgent
-                    captured = true;
-                    transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
-                    Debug.Log("Flag collision " + other);
+                    if (!IsCaptured())
+                    {
+                        //assign agent to captureAgent
+                        captured = true;
+                        transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
+                        Debug.Log("Flag collision " + other);
+                        CaptureAgent = other.transform;
+                        Debug.Log(CaptureAgent);
+                        Action captureAction = Agent.GetActionList().Find((action) => action.GetName() == "CaptureFlagAction");
+                        if (captureAction != null)
+                        {
+                            captureAction.SetCapturedFlag(this.transform);
+                        }
+                    }
                 }
             }
         }
