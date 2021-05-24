@@ -273,23 +273,23 @@ public class Agent : MonoBehaviour
         //DebugLogActions();
         //Debug.Log(GoalBeingPursued + " | " + ActionToExecute);
         ActionToExecute.UpdateDirection();
-        if (ActionToExecute.GetClosestFlagPosition() != new Vector3(1000f, 1000f, 1000f))
+        //if (ActionToExecute.GetClosestFlagPosition() != new Vector3(1000f, 1000f, 1000f))
+        
+        if (ActionToExecute.Perform() == Action.State.Executed)
         {
-            if (ActionToExecute.Perform() == Action.State.Executed)
-            {
-                GoalBeingPursued.SetGoalState(Goal.State.Achieved);
-                RemoveAchivedGoal(GoalBeingPursued);
-                RemoveActionsAssociatedToGoal(GoalBeingPursued);
-                //GameObject objective = GameObject.FindWithTag("Objective"); //remove later and add look at resource action
-                //Vector3 ObjPos = objective.transform.position;
-                GoalList.Add(new CaptureFlagGoal(transform));
-                GetActionsFormSpecificGoal(GoalList.Find((goal) => goal.GetName() == "CaptureFlagGoal"));
-                Debug.Log("Flag Captured");
-            }
+            GoalBeingPursued.SetGoalState(Goal.State.Achieved);
+            RemoveAchivedGoal(GoalBeingPursued);
+            RemoveActionsAssociatedToGoal(GoalBeingPursued);
+            //GameObject objective = GameObject.FindWithTag("Objective"); //remove later and add look at resource action
+            //Vector3 ObjPos = objective.transform.position;
+            GoalList.Add(new CaptureFlagGoal(transform));
+            GetActionsFormSpecificGoal(GoalList.Find((goal) => goal.GetName() == "CaptureFlagGoal"));
+            Debug.Log("Flag Captured");
         }
-        else
+
+        /*else
         {
             Debug.Log("Waiting for Flags to spawn");
-        }
+        }*/
     }
 }

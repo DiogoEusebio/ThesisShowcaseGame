@@ -5,7 +5,8 @@ using UnityEngine;
 public class FlagObjective : MonoBehaviour
 {
     private bool captured = false;
-    private Transform CaptureAgent = null;
+    private Transform CaptureAgentTransform = null;
+    private Agent CaptureAgent;
     void Start()
     {
         //Debug.Log("FLAG EXISTS");
@@ -16,7 +17,14 @@ public class FlagObjective : MonoBehaviour
     {
         if (captured)
         {
-            //update flag pos
+            if(!CaptureAgent.GetIsDead())
+                transform.position = CaptureAgentTransform.position;
+        }
+        if (CaptureAgent.GetIsDead())
+        {
+            //maybe change this check to agent class
+            Action captureAction = CaptureAgent.GetActionList().Find((action) => action.GetName() == "CaptureFlagAction");
+            captureAction.DropFlag();
         }
     }
 
@@ -37,8 +45,9 @@ public class FlagObjective : MonoBehaviour
                         captured = true;
                         transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
                         Debug.Log("Flag collision " + other);
-                        CaptureAgent = other.transform;
-                        Debug.Log(CaptureAgent);
+                        CaptureAgentTransform = other.transform;
+                        CaptureAgent = Agent;
+                        Debug.Log(CaptureAgentTransform);
                         Action captureAction = Agent.GetActionList().Find((action) => action.GetName() == "CaptureFlagAction");
                         if (captureAction != null)
                         {

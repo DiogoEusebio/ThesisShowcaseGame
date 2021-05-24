@@ -26,4 +26,5 @@ public abstract class Action
     public virtual Vector3 GetClosestResorcePosition() { Vector3 err = new Vector3(1000f, 1000f, 1000f); return err; }
     public virtual Vector3 GetClosestFlagPosition() { Vector3 err = new Vector3(1000f, 1000f, 1000f); return err; }
     public virtual void SetCapturedFlag(Transform Flag) { /*do nothing*/ }
+    public virtual void DropFlag() { /*do nothing*/ }
 }

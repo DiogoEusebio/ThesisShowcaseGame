@@ -163,5 +163,5 @@ public class CaptureFlagAction : Action
         var rotation = Quaternion.LookRotation(lookPos);
         AgentTransform.rotation = Quaternion.Slerp(AgentTransform.rotation, rotation, Time.deltaTime * 10);
     }
-    public void DropFlag() { Debug.Log("Should be droping flag"); }
+    public override void DropFlag() { Debug.Log("Should be droping flag"); }
 }
