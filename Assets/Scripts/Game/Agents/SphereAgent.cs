@@ -60,7 +60,7 @@ public class SphereAgent : Agent
             ActionToExecute.UpdateCooldown();
             //Debug.Log("enemy team aced: " + GameObject.FindWithTag("AgentManager").GetComponent<AgentManager>().IsEnemyTeamAced(transform.gameObject.tag) + " | cooldown: " + attackIsOnCoolDown);
             //Debug.Log("Contesting objective");
-            ContestObjective();
+            CaptureFlag();
         }
     }
 }
