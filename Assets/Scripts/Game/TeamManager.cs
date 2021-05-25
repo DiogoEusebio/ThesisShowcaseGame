@@ -28,6 +28,9 @@ public class TeamManager : MonoBehaviour
 
     void SpawnFlag()
     {
+        GameObject newObj = Instantiate(FlagPrefab, Vector3.zero, Quaternion.identity, this.transform);
+        newObj.GetComponent<Renderer>().material = TeamColorMat;
+        FlagsList.Add(newObj);
         Vector3 FlagSpawnPoint = new Vector3(0,0,0);
         if(FlagsList.Count == 0)
         {
@@ -35,14 +38,39 @@ public class TeamManager : MonoBehaviour
         }
         else if(FlagsList.Count % 2 == 1)
         {
-            FlagSpawnPoint = FirstFlagPos + Vector3.Cross(AuxDir, Vector3.up) / 2;
+            FlagSpawnPoint = FirstFlagPos + (Vector3.Cross(AuxDir, Vector3.up) / 2 * (FlagsList.Count / 2 - 1));
         }
         else if(FlagsList.Count % 2 == 0)
         {
-            FlagSpawnPoint = FirstFlagPos - Vector3.Cross(AuxDir, Vector3.up) / 2;
+            FlagSpawnPoint = FirstFlagPos - (Vector3.Cross(AuxDir, Vector3.up) / 2 * (FlagsList.Count / 2 + 1));
         }
-        GameObject newObj = Instantiate(FlagPrefab, FlagSpawnPoint, Quaternion.identity, this.transform);
-        newObj.GetComponent<Renderer>().material = TeamColorMat;
-        FlagsList.Add(newObj);
+        newObj.transform.position = FlagSpawnPoint;
+    }
+    public void SpawnFlag(Transform Flag)
+    {
+
+        FlagsList.Add(Flag.gameObject);
+        Vector3 FlagSpawnPoint = new Vector3(0, 0, 0);
+        if (FlagsList.Count == 0)
+        {
+            FlagSpawnPoint = FirstFlagPos;
+        }
+        else if (FlagsList.Count % 2 == 1)
+        {
+            FlagSpawnPoint = FirstFlagPos + Vector3.Cross(AuxDir, Vector3.up) / 2 * (FlagsList.Count / 2 - 1);
+        }
+        else if (FlagsList.Count % 2 == 0)
+        {
+            FlagSpawnPoint = FirstFlagPos - Vector3.Cross(AuxDir, Vector3.up) / 2 * (FlagsList.Count / 2 + 1);
+        }
+        Flag.parent.GetComponent<TeamManager>().LoseFlag(Flag);
+        Flag.SetParent(this.transform);
+        Flag.GetComponentInChildren<FlagObjective>().SetCurrentHoldingTeamBasedOnParentName();
+        Flag.gameObject.GetComponent<Renderer>().material = TeamColorMat;
+        Flag.position = FlagSpawnPoint;
+    }
+    void LoseFlag(Transform Flag)
+    {
+        FlagsList.Remove(Flag.gameObject);
     }
 }

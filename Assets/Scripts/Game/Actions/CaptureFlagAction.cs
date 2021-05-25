@@ -34,7 +34,21 @@ public class CaptureFlagAction : Action
         if(Vector3.Distance(AgentTransform.position, targetPosition) < 0.2f && CapturedFlag != null)
         {
             Debug.Log("RETURNING TO BASE");
-            DropFlag();
+            if (AgentTransform.CompareTag("RedTeam"))
+            {
+                GameObject.Find("RedTeamBase").GetComponentInChildren<TeamManager>().SpawnFlag(CapturedFlag);
+                DropFlag();
+            }
+            if (AgentTransform.CompareTag("BlueTeam"))
+            {
+                GameObject.Find("BlueTeamBase").GetComponentInChildren<TeamManager>().SpawnFlag(CapturedFlag);
+                DropFlag();
+            }
+            if (AgentTransform.CompareTag("GreenTeam"))
+            {
+                GameObject.Find("GreenTeamBase").GetComponentInChildren<TeamManager>().SpawnFlag(CapturedFlag);
+                DropFlag();
+            }
             ActionState = State.Executed;
         }
         return ActionState;
@@ -163,5 +177,12 @@ public class CaptureFlagAction : Action
         var rotation = Quaternion.LookRotation(lookPos);
         AgentTransform.rotation = Quaternion.Slerp(AgentTransform.rotation, rotation, Time.deltaTime * 10);
     }
-    public override void DropFlag() { Debug.Log("Should be droping flag"); }
+    public override void DropFlag()
+    {
+        AgentTransform.GetComponentInChildren<Agent>().DropFlag();
+        Debug.Log("Should be droping flag");
+        CapturedFlag.gameObject.GetComponentInChildren<FlagObjective>().Dropped();
+        CapturedFlag.localScale = new Vector3(0.8f, 0.8f, 0.8f);
+        CapturedFlag = null;
+    }
 }

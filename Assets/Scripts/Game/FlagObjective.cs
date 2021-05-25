@@ -7,9 +7,22 @@ public class FlagObjective : MonoBehaviour
     private bool captured = false;
     private Transform CaptureAgentTransform = null;
     private Agent CaptureAgent;
+    private string currentTeamHolding;
     void Start()
     {
         //Debug.Log("FLAG EXISTS");
+        if (transform.parent.CompareTag("RedTeamBase"))
+        {
+            currentTeamHolding = "RedTeam";
+        }
+        if (transform.parent.CompareTag("BlueTeamBase"))
+        {
+            currentTeamHolding = "BlueTeam";
+        }
+        if (transform.parent.CompareTag("GreenTeamBase"))
+        {
+            currentTeamHolding = "GreenTeam";
+        }
     }
 
     // Update is called once per frame
@@ -20,21 +33,51 @@ public class FlagObjective : MonoBehaviour
             if(!CaptureAgent.GetIsDead())
                 transform.position = CaptureAgentTransform.position;
         }
-        if (CaptureAgent.GetIsDead())
+
+        /*else
         {
-            //maybe change this check to agent class
-            Action captureAction = CaptureAgent.GetActionList().Find((action) => action.GetName() == "CaptureFlagAction");
-            captureAction.DropFlag();
+            if (Vector3.Distance(transform.position, new Vector3(12.87f, 1.0f, 14.77f)) < 2.5f)
+            {
+                GameObject.Find("RedTeamBase").GetComponentInChildren<TeamManager>().SpawnFlag(transform);
+            }
+            if (Vector3.Distance(transform.position, new Vector3(-12.87f, 1.0f, 14.77f)) < 2.5f)
+            {
+                GameObject.Find("BlueTeamBase").GetComponentInChildren<TeamManager>().SpawnFlag(transform);
+            }
+            if (Vector3.Distance(transform.position, new Vector3(0.0f, 1.0f, -7.0f)) < 2.5f)
+            {
+                GameObject.Find("GreenTeamBase").GetComponentInChildren<TeamManager>().SpawnFlag(transform);
+            }
+        }*/
+    }
+    public void SetCurrentHoldingTeamBasedOnParentName()
+    {
+        if (transform.parent.CompareTag("RedTeamBase"))
+        {
+            currentTeamHolding = "RedTeam";
+        }
+        if (transform.parent.CompareTag("BlueTeamBase"))
+        {
+            currentTeamHolding = "BlueTeam";
+        }
+        if (transform.parent.CompareTag("GreenTeamBase"))
+        {
+            currentTeamHolding = "GreenTeam";
         }
     }
-
+    public void Dropped()
+    {
+        CaptureAgentTransform = null;
+        CaptureAgent = null;
+        captured = false;
+    }
     public bool IsCaptured() { return captured; }
     private void OnTriggerEnter(Collider other)
     {
         //Debug.Log("Flag Collision: " + other);
         if (other.TryGetComponent(out Agent Agent))
         {
-            if (!Agent.HasCapturedFlag())
+            if (!Agent.HasCapturedFlag() && !Agent.transform.CompareTag(currentTeamHolding))
             {
                 Agent.SetCapturedFlag(this.transform);
                 if (Agent.GetAgentType() == Agent.AgentType.Cube)

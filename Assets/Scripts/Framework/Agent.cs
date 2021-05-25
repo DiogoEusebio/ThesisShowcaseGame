@@ -79,6 +79,10 @@ public class Agent : MonoBehaviour
     {
         capturedFlag = flag;
     }
+    public void DropFlag()
+    {
+        capturedFlag = null;
+    }
     public void GetActionsFromGoals()
     {
         //Debug.Log("GETTING ACTIONS...");
@@ -160,6 +164,11 @@ public class Agent : MonoBehaviour
 
     public void KillAgent()
     {
+        if (HasCapturedFlag())
+        {
+            Action CapFlag = ActionList.Find((action) => action.GetName() == "CaptureFlagAction");
+            CapFlag.DropFlag();
+        }
         isDead = true;
         this.transform.position = new Vector3(0.0f, -50.0f, 0.0f);
         //Clear Roles, Goals and Actions
