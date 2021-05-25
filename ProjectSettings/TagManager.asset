@@ -12,6 +12,7 @@ TagManager:
   - RedTeamBase
   - BlueTeamBase
   - GreenTeamBase
+  - ArenaCenter
   layers:
   - Default
   - TransparentFX

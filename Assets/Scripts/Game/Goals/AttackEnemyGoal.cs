@@ -10,6 +10,7 @@ public class AttackEnemyGoal : Goal
         if(AgentTransform.GetComponent<Agent>().GetAgentType() == Agent.AgentType.Cone)
         {
             ActionList.Add(new ShootBulletAction(AgentTransform));
+            ActionList.Add(new LookAtCloserEnemyAction(AgentTransform));
         }
         else if(AgentTransform.GetComponent<Agent>().GetAgentType() == Agent.AgentType.Sphere)
         {

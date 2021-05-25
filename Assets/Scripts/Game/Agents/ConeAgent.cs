@@ -27,7 +27,9 @@ public class ConeAgent : Agent
             //DebugLogGoals();
             //DebugLogActions();
 
-            ContestObjective();
+            CaptureFlag();
+            PerformSimulActions();
+            //ContestObjective();
             if (timeLeftToShootAgain <= 0.0f)
             {
                 shootbullet();
@@ -39,9 +41,7 @@ public class ConeAgent : Agent
     protected override void GenerateBasicAgentGoals()
     {
         GoalList.Add(new AttackEnemyGoal(transform, null)); //enemy transform null for now, might change shoot bullet action later to acount for it
-        GameObject objective = GameObject.FindWithTag("Objective");
-        Vector3 ObjPos = objective.transform.position;
-        GoalList.Add(new ContestObjectiveGoal(transform, new Vector3(Random.Range(ObjPos.x - 3.0f, ObjPos.x + 3.0f), 1.0f, Random.Range(ObjPos.z - 3.0f, ObjPos.z + 3.0f))));
+        GoalList.Add(new CaptureFlagGoal(transform));
     }
 
     public void shootbullet()

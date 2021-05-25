@@ -33,7 +33,6 @@ public class FlagObjective : MonoBehaviour
             if(!CaptureAgent.GetIsDead())
                 transform.position = CaptureAgentTransform.position;
         }
-
         /*else
         {
             if (Vector3.Distance(transform.position, new Vector3(12.87f, 1.0f, 14.77f)) < 2.5f)
@@ -77,13 +76,14 @@ public class FlagObjective : MonoBehaviour
         //Debug.Log("Flag Collision: " + other);
         if (other.TryGetComponent(out Agent Agent))
         {
-            if (!Agent.HasCapturedFlag() && !Agent.transform.CompareTag(currentTeamHolding))
+            //if (!Agent.HasCapturedFlag() && !Agent.transform.CompareTag(currentTeamHolding))
+            if (!Agent.HasCapturedFlag())
             {
-                Agent.SetCapturedFlag(this.transform);
-                if (Agent.GetAgentType() == Agent.AgentType.Cube)
+                if (Agent.GetAgentType() != Agent.AgentType.Tetrahedron)
                 {
                     if (!IsCaptured())
                     {
+                        Agent.SetCapturedFlag(this.transform);
                         //assign agent to captureAgent
                         captured = true;
                         transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);

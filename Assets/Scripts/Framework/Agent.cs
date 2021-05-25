@@ -11,9 +11,10 @@ public class Agent : MonoBehaviour
     protected Action ActionToExecute;
     private float MaxHP;
     private float CurrentHP;
-    private bool isDead = false;
+    public bool isDead = false;
     protected float respawnTimer;
     protected Transform capturedFlag;
+    private Vector3 targetLookAtPosition;
 
     public enum AgentType
     {
@@ -243,7 +244,6 @@ public class Agent : MonoBehaviour
     }
 
     //------------------------ AI/Behavior methods -----------------------------//
-
     public void WalkRandomly()
     {
         GoalBeingPursued = GoalList.Find((goal) => goal.GetName() == "MoveToPositionGoal");

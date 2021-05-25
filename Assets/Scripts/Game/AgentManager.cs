@@ -26,7 +26,7 @@ public class AgentManager : MonoBehaviour
     void Start()
     {
         //GenerateRandomComps();
-        GenerateCompsOfTypes(4, 1, 2);
+        GenerateCompsOfTypes(4, 2, 3);
 
         List<GameObject> agentList = new List<GameObject>();
 
@@ -48,40 +48,10 @@ public class AgentManager : MonoBehaviour
     {
         
     }
-    public bool IsEnemyTeamAced(string AgentTag)
-    {
-        if (AgentTag == "BlueTeam")
-        {
-            if (GetNumberOfDeadEnemies("RedTeam") == Redteam.transform.childCount && GetNumberOfDeadEnemies("GreenTeam") == Greenteam.transform.childCount)
-                return true;
-        }
-        else if (AgentTag == "RedTeam")
-        {
-            if (GetNumberOfDeadEnemies("BlueTeam") == Blueteam.transform.childCount && GetNumberOfDeadEnemies("GreenTeam") == Greenteam.transform.childCount)
-                return true;
-        }
-        else if (AgentTag == "GreenTeam")
-        {
-            if (GetNumberOfDeadEnemies("RedTeam") == Blueteam.transform.childCount && GetNumberOfDeadEnemies("BlueTeam") == Blueteam.transform.childCount)
-                return true;
-        }
-        return false;
-    }
-
-    public int GetNumberOfDeadEnemies(string EnemyTeamTag)
+    public int GetNumberOfDeadEnemies(string MyTeamTag)
     {
         int numberOfDeadEnemies = 0;
-        if(EnemyTeamTag == "BlueTeam")
-        {
-            foreach(Transform enemy in Blueteam.GetComponentInChildren<Transform>())
-            {
-                if (enemy.GetComponent<Agent>().GetIsDead())
-                {
-                    numberOfDeadEnemies++;
-                }
-            }
-        }
-        if(EnemyTeamTag == "RedTeam")
+        if(MyTeamTag != "RedTeam")
         {
             foreach (Transform enemy in Redteam.GetComponentInChildren<Transform>())
             {
@@ -91,7 +61,17 @@ public class AgentManager : MonoBehaviour
                 }
             }
         }
-        if (EnemyTeamTag == "GreenTeam")
+        if (MyTeamTag != "BlueTeam")
+        {
+            foreach (Transform enemy in Blueteam.GetComponentInChildren<Transform>())
+            {
+                if (enemy.GetComponent<Agent>().GetIsDead())
+                {
+                    numberOfDeadEnemies++;
+                }
+            }
+        }
+        if (MyTeamTag != "GreenTeam")
         {
             foreach (Transform enemy in Greenteam.GetComponentInChildren<Transform>())
             {

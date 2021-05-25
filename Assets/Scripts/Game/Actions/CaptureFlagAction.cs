@@ -22,6 +22,10 @@ public class CaptureFlagAction : Action
     public override State Perform()
     {
         if (targetPosition == null) { return State.NotBeingExecuted; }
+        if(CapturedFlag == null)
+        {
+            targetPosition = GetClosestFlagPosition();
+        }
         Debug.Log(CapturedFlag + " | " + targetPosition);
         AgentTransform.position += direction * movementSpeed * Time.deltaTime;
         //Capturing Flag Condition
@@ -66,17 +70,16 @@ public class CaptureFlagAction : Action
     {
         float MinDistance = 10000.0f; //consider changing to max float
         float currDist;
-        Transform[] Flags1;
-        Transform[] Flags2;
+        Transform[] Flags1 = GameObject.Find("BlueTeamBase").GetComponentsInChildren<Transform>();
+        Transform[] Flags2 = GameObject.Find("GreenTeamBase").GetComponentsInChildren<Transform>();
+        Transform[] Flags3 = GameObject.Find("RedTeamBase").GetComponentsInChildren<Transform>();
         List<Transform> Flags = new List<Transform>();
         //Debug.Log(AgentTransform.CompareTag("RedTeam"));
         if (AgentTransform.CompareTag("RedTeam"))
         {
-            Flags1 = GameObject.Find("BlueTeamBase").GetComponentsInChildren<Transform>();
-            Flags2 = GameObject.Find("GreenTeamBase").GetComponentsInChildren<Transform>();
-            foreach(Transform t in Flags1)
+            foreach (Transform t in Flags1)
             {
-                if(t == GameObject.Find("BlueTeamBase").transform)
+                if (t == GameObject.Find("BlueTeamBase").transform || t.GetComponentInChildren<FlagObjective>().IsCaptured())
                 {
                     continue;
                 }
@@ -84,20 +87,26 @@ public class CaptureFlagAction : Action
             }
             foreach (Transform t in Flags2)
             {
-                if (t == GameObject.Find("GreenTeamBase").transform)
+                if (t == GameObject.Find("GreenTeamBase").transform || t.GetComponentInChildren<FlagObjective>().IsCaptured())
+                {
+                    continue;
+                }
+                Flags.Add(t);
+            }
+            foreach (Transform t in Flags3)
+            {
+                if (t == GameObject.Find("RedTeamBase").transform || t.GetComponentInChildren<FlagObjective>().IsCaptured() || Vector3.Distance(t.position, GetBasePosition()) < 4.0f)
                 {
                     continue;
                 }
                 Flags.Add(t);
             }
         }
-        else if (AgentTransform.CompareTag("BlueTeam"))
+        if (AgentTransform.CompareTag("BlueTeam"))
         {
-            Flags1 = GameObject.Find("RedTeamBase").GetComponentsInChildren<Transform>();
-            Flags2 = GameObject.Find("GreenTeamBase").GetComponentsInChildren<Transform>();
             foreach (Transform t in Flags1)
             {
-                if (t == GameObject.Find("RedTeamBase").transform)
+                if (t == GameObject.Find("BlueTeamBase").transform || t.GetComponentInChildren<FlagObjective>().IsCaptured() || Vector3.Distance(t.position, GetBasePosition()) < 4.0f)
                 {
                     continue;
                 }
@@ -105,20 +114,26 @@ public class CaptureFlagAction : Action
             }
             foreach (Transform t in Flags2)
             {
-                if (t == GameObject.Find("GreenTeamBase").transform)
+                if (t == GameObject.Find("GreenTeamBase").transform || t.GetComponentInChildren<FlagObjective>().IsCaptured())
+                {
+                    continue;
+                }
+                Flags.Add(t);
+            }
+            foreach (Transform t in Flags3)
+            {
+                if (t == GameObject.Find("RedTeamBase").transform || t.GetComponentInChildren<FlagObjective>().IsCaptured())
                 {
                     continue;
                 }
                 Flags.Add(t);
             }
         }
-        else if (AgentTransform.CompareTag("GreenTeam"))
+        if (AgentTransform.CompareTag("GreenTeam"))
         {
-            Flags1 = GameObject.Find("BlueTeamBase").GetComponentsInChildren<Transform>();
-            Flags2 = GameObject.Find("RedTeamBase").GetComponentsInChildren<Transform>();
             foreach (Transform t in Flags1)
             {
-                if (t == GameObject.Find("BlueTeamBase").transform)
+                if (t == GameObject.Find("BlueTeamBase").transform || t.GetComponentInChildren<FlagObjective>().IsCaptured())
                 {
                     continue;
                 }
@@ -126,7 +141,15 @@ public class CaptureFlagAction : Action
             }
             foreach (Transform t in Flags2)
             {
-                if (t == GameObject.Find("RedTeamBase").transform)
+                if (t == GameObject.Find("GreenTeamBase").transform || t.GetComponentInChildren<FlagObjective>().IsCaptured() || Vector3.Distance(t.position, GetBasePosition()) < 4.0f)
+                {
+                    continue;
+                }
+                Flags.Add(t);
+            }
+            foreach (Transform t in Flags3)
+            {
+                if (t == GameObject.Find("RedTeamBase").transform || t.GetComponentInChildren<FlagObjective>().IsCaptured())
                 {
                     continue;
                 }
@@ -172,10 +195,12 @@ public class CaptureFlagAction : Action
         direction.Normalize();
         //Debug.Log(direction);
         //quick "look at" action incorporated
+        /*
         var lookPos = targetPosition - AgentTransform.position;
         lookPos.y = 0;
         var rotation = Quaternion.LookRotation(lookPos);
         AgentTransform.rotation = Quaternion.Slerp(AgentTransform.rotation, rotation, Time.deltaTime * 10);
+        */
     }
     public override void DropFlag()
     {
