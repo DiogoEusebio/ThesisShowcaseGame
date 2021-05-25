@@ -531,7 +531,7 @@ MonoBehaviour:
   Blueteam: {fileID: 949528491}
   Greenteam: {fileID: 1528433886}
   RedTeamSize: 2
-  BlueTeamSize: 0
+  BlueTeamSize: 2
   GreenTeamSize: 2
   RedMat: {fileID: 2100000, guid: d7324fc0609580f46994727178d65584, type: 2}
   BlueMat: {fileID: 2100000, guid: 38a9dbd64a2357b4fa5a27880b3327bd, type: 2}

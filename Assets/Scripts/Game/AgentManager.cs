@@ -26,7 +26,7 @@ public class AgentManager : MonoBehaviour
     void Start()
     {
         //GenerateRandomComps();
-        GenerateCompsOfTypes(4, 2, 3);
+        GenerateCompsOfTypes(1, 2, 3);
 
         List<GameObject> agentList = new List<GameObject>();
 

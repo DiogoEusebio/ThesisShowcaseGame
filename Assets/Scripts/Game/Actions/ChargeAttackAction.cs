@@ -51,6 +51,10 @@ public class ChargeAttackAction : Action
         agentTransform.position += direction * movementSpeed * Time.deltaTime;
         return State.BeingExecuted;
     }
+    public void SetClossestEnemy(Transform EnemyTransform)
+    {
+        enemyTransform = EnemyTransform;
+    }
     public override bool GetIsOnCoolDown()
     {
         if(CooldownTimer <= 0.0f)

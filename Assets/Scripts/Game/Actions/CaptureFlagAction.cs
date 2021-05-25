@@ -207,7 +207,8 @@ public class CaptureFlagAction : Action
         AgentTransform.GetComponentInChildren<Agent>().DropFlag();
         Debug.Log("Should be droping flag");
         CapturedFlag.gameObject.GetComponentInChildren<FlagObjective>().Dropped();
-        CapturedFlag.localScale = new Vector3(0.8f, 0.8f, 0.8f);
+        CapturedFlag.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+        CapturedFlag.position += new Vector3(0.0f, -0.5f, 0.0f); //HACK: flag height adjustment due to bad flag prefab modeling
         CapturedFlag = null;
     }
 }
