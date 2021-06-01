@@ -11,9 +11,12 @@ public class AgentManager : MonoBehaviour
     public GameObject Redteam;
     public GameObject Blueteam;
     public GameObject Greenteam;
+    public GameObject IndependentAgents;
+    public GameObject HealtBarPrefab;
     public uint RedTeamSize;
     public uint BlueTeamSize;
     public uint GreenTeamSize;
+    public uint IndependentAgentsSize;
     public Material RedMat;
     public Material BlueMat;
     public Material GreenMat;
@@ -22,12 +25,13 @@ public class AgentManager : MonoBehaviour
     private Vector3 RedTeamSpawnPoint = new Vector3(12.87f, 1.0f, 14.77f);
     private Vector3 BlueTeamSpawnPoint = new Vector3(-12.87f, 1.0f, 14.77f);
     private Vector3 GreenTeamSpawnPoint = new Vector3(0.0f, 1.0f, -7.0f);
+    private Vector3 IndependentAgentSpawnPoint = new Vector3(0.0f, 1.0f, 7.0f);
     // Start is called before the first frame update
     void Start()
     {
         //GenerateRandomComps();
+        GenerateIndependentAgents();
         GenerateCompsOfTypes(1, 2, 3);
-
         List<GameObject> agentList = new List<GameObject>();
 
         //roleManager = new RoleManager(agentList);
@@ -172,7 +176,15 @@ public class AgentManager : MonoBehaviour
     }
 
     //-------------------- AGENT GENERATION -------------------------//
-
+    void GenerateIndependentAgents()
+    {
+        GameObject newObj;
+        for(uint i = 0; i < IndependentAgentsSize; i++)
+        {
+            newObj = GenerateAgentOfType(IndependentAgentSpawnPoint + new Vector3(Random.Range(-2.5f, 2.5f), 0.0f, Random.Range(-2.5f, 2.5f)), IndependentAgents.transform, 4);
+            newObj.tag = "IndependentAgent";
+        }
+    }
     void GenerateCompsOfTypes(int blueType, int redType, int greenType)
     {
         GameObject newObj;

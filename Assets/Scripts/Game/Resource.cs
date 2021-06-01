@@ -17,9 +17,11 @@ public class Resource : MonoBehaviour
     {
         return collected;
     }
-    public void Consume()
+
+    public void ConsumedBy(Transform Agent)
     {
         //Do something
+        Debug.Log(Agent + " Consumed a resource");
 
         Destroy(this.gameObject);
     }
@@ -35,6 +37,8 @@ public class Resource : MonoBehaviour
                     ResourceManager RM = transform.parent.GetComponent<ResourceManager>();
                     RM.UpdateCooldownFlag(this.transform.position);
                     transform.parent = other.transform;
+                    //consider taking into consideration case when there is a collision but agent is not trying to collect item
+                    transform.parent.GetComponent<Agent>().GetActionList().Find((action) => action.GetName() == "CollectResourceAction").SetExecuted(true);
                     transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
                     //Debug.Log("resource collision " + other);
                 }

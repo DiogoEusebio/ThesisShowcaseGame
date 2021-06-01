@@ -8,6 +8,7 @@ public class CollectResourceAction : Action
     private Vector3 targetPosition;
     private Vector3 direction;
     private float movementSpeed = 10.0f;
+    private bool executed = false;
     // Start is called before the first frame update
     public CollectResourceAction(Transform Agent)
     {
@@ -19,14 +20,21 @@ public class CollectResourceAction : Action
     }
     public override State Perform()
     {
-        if(targetPosition == null) { return State.NotBeingExecuted;  }
+        if(targetPosition == null) {
+            Debug.Log("targetPosition");
+            return State.NotBeingExecuted;  }
         AgentTransform.position += direction * movementSpeed * Time.deltaTime;
         //Stop condition
-        if (Vector3.Distance(AgentTransform.position, targetPosition) < 0.5f)
+        if (executed)
         {
-            ActionState = State.Executed;
+            Debug.Log("executed");
+            return Action.State.Executed;
         }
-        return ActionState;
+        else
+        {
+            Debug.Log("Being Executed");
+            return Action.State.BeingExecuted;
+        }
     }
     public override Vector3 GetClosestResorcePosition()
     {
@@ -50,6 +58,10 @@ public class CollectResourceAction : Action
         }
         //Debug.Log(targetPosition);
         return targetPosition;
+    }
+    public override void SetExecuted(bool val)
+    {
+        executed = true;
     }
     public override void UpdateDirection()
     {

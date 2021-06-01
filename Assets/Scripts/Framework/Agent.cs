@@ -15,7 +15,6 @@ public class Agent : MonoBehaviour
     protected float respawnTimer;
     protected Transform capturedFlag;
     private Vector3 targetLookAtPosition;
-
     public enum AgentType
     {
         Cube,
@@ -57,12 +56,13 @@ public class Agent : MonoBehaviour
     public List<Action> GetActionList(){ return ActionList; }
     public bool GetIsDead() { return isDead; }
     public void SetIsDead(bool value) { isDead = value; }
-    public void SetMaxHP(float newMaxHPvalue) { MaxHP = newMaxHPvalue; }
+    public void SetMaxHP(float newMaxHPvalue) { MaxHP = newMaxHPvalue; /*HealthBar.SetMaxHealth((int)newMaxHPvalue);*/ }
     public void SetCurrentHPtoMax() { CurrentHP = MaxHP; }
     public void TakeDamage(float dmg)
     {
         //Debug.Log("current Hp: " + CurrentHP);
         CurrentHP -= dmg;
+        /*HealthBar.SetHealth((int)CurrentHP);*/
         if(CurrentHP <= 0)
         {
             KillAgent();
@@ -140,6 +140,7 @@ public class Agent : MonoBehaviour
             if (canBeRemoved)
             {
                 ActionList.Remove(a);
+                Debug.Log("ACTION REMOVED: " + a);
             }
         }                
     }
@@ -254,7 +255,7 @@ public class Agent : MonoBehaviour
             GoalBeingPursued.SetGoalState(Goal.State.Achieved);
             RemoveAchivedGoal(GoalBeingPursued);
             RemoveActionsAssociatedToGoal(GoalBeingPursued);
-            GoalList.Add(new MoveToTargetCoordsGoal(transform, new Vector3(Random.Range(-28.0f, 28.0f), 1.0f, Random.Range(-5.0f, 5.0f))));
+            GoalList.Add(new MoveToTargetCoordsGoal(transform, new Vector3(Random.Range(-12.0f, 12.0f), 1.0f, Random.Range(-7.0f, 22.0f))));
         }
     }
 
@@ -293,7 +294,7 @@ public class Agent : MonoBehaviour
             //Vector3 ObjPos = objective.transform.position;
             GoalList.Add(new CaptureFlagGoal(transform));
             GetActionsFormSpecificGoal(GoalList.Find((goal) => goal.GetName() == "CaptureFlagGoal"));
-            Debug.Log("Flag Captured");
+            //Debug.Log("Flag Captured");
         }
 
         /*else

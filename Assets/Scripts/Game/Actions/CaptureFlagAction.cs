@@ -26,7 +26,7 @@ public class CaptureFlagAction : Action
         {
             targetPosition = GetClosestFlagPosition();
         }
-        Debug.Log(CapturedFlag + " | " + targetPosition);
+        //Debug.Log(CapturedFlag + " | " + targetPosition);
         AgentTransform.position += direction * movementSpeed * Time.deltaTime;
         //Capturing Flag Condition
         if (Vector3.Distance(AgentTransform.position, targetPosition) < 0.2f && CapturedFlag == null)
@@ -37,7 +37,7 @@ public class CaptureFlagAction : Action
         //Returning Flag Condition
         if(Vector3.Distance(AgentTransform.position, targetPosition) < 0.2f && CapturedFlag != null)
         {
-            Debug.Log("RETURNING TO BASE");
+            //Debug.Log("RETURNING TO BASE");
             if (AgentTransform.CompareTag("RedTeam"))
             {
                 GameObject.Find("RedTeamBase").GetComponentInChildren<TeamManager>().SpawnFlag(CapturedFlag);
@@ -59,11 +59,11 @@ public class CaptureFlagAction : Action
     }
     public override void SetCapturedFlag(Transform flag){
         CapturedFlag = flag;
-        Debug.Log("Setting captured flag");
+        //Debug.Log("Setting captured flag");
         //this method also updates the agent target position
         //as now having the flag we want to return it to our base
         targetPosition = GetBasePosition();
-        Debug.Log(targetPosition);
+        //Debug.Log(targetPosition);
         UpdateDirection();
     }
     public override Vector3 GetClosestFlagPosition()
@@ -205,7 +205,7 @@ public class CaptureFlagAction : Action
     public override void DropFlag()
     {
         AgentTransform.GetComponentInChildren<Agent>().DropFlag();
-        Debug.Log("Should be droping flag");
+        //Debug.Log("Should be droping flag");
         CapturedFlag.gameObject.GetComponentInChildren<FlagObjective>().Dropped();
         CapturedFlag.localScale = new Vector3(1.0f, 1.0f, 1.0f);
         CapturedFlag.position += new Vector3(0.0f, -0.5f, 0.0f); //HACK: flag height adjustment due to bad flag prefab modeling

@@ -87,10 +87,10 @@ public class FlagObjective : MonoBehaviour
                         //assign agent to captureAgent
                         captured = true;
                         transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
-                        Debug.Log("Flag collision " + other);
+                        //Debug.Log("Flag collision " + other);
                         CaptureAgentTransform = other.transform;
                         CaptureAgent = Agent;
-                        Debug.Log(CaptureAgentTransform);
+                        //Debug.Log(CaptureAgentTransform);
                         Action captureAction = Agent.GetActionList().Find((action) => action.GetName() == "CaptureFlagAction");
                         if (captureAction != null)
                         {
