@@ -49,7 +49,7 @@ public class SphereAgent : Agent
             Action.State performState = ActionToExecute.Perform();
             if (performState == Action.State.Executed)
             {
-                Debug.Log("CHARGE!!!");
+                //Debug.Log("CHARGE!!!");
                 attackIsOnCoolDown = ActionToExecute.GetIsOnCoolDown(); // = true;
                 GoalBeingPursued.SetGoalState(Goal.State.Achieved);
             }

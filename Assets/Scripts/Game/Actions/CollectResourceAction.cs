@@ -21,18 +21,18 @@ public class CollectResourceAction : Action
     public override State Perform()
     {
         if(targetPosition == null) {
-            Debug.Log("targetPosition");
+            //Debug.Log("targetPosition");
             return State.NotBeingExecuted;  }
         AgentTransform.position += direction * movementSpeed * Time.deltaTime;
         //Stop condition
         if (executed)
         {
-            Debug.Log("executed");
+            //Debug.Log("executed");
             return Action.State.Executed;
         }
         else
         {
-            Debug.Log("Being Executed");
+            //Debug.Log("Being Executed");
             return Action.State.BeingExecuted;
         }
     }

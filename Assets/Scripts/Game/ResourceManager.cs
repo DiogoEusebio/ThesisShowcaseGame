@@ -7,7 +7,7 @@ public class ResourceManager : MonoBehaviour
     private List<Vector3> ResourcePoints = new List<Vector3>();
     private List<Vector2> ResourceCooldowns = new List<Vector2>(); //x is used as a bool to know if this point is on cooldown or not, y is the cooldown timer
     public GameObject ResourcePrefab;
-    private float respawnCooldown = 5.0f;
+    private float respawnCooldown = 2.5f;
     // Start is called before the first frame update
     void Start()
     {

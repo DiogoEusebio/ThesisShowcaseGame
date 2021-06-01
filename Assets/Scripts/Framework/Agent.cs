@@ -140,7 +140,7 @@ public class Agent : MonoBehaviour
             if (canBeRemoved)
             {
                 ActionList.Remove(a);
-                Debug.Log("ACTION REMOVED: " + a);
+                //Debug.Log("ACTION REMOVED: " + a);
             }
         }                
     }

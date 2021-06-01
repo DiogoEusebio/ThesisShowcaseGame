@@ -533,10 +533,10 @@ MonoBehaviour:
   IndependentAgents: {fileID: 415930099}
   HealtBarPrefab: {fileID: 4031392805482751914, guid: 259ff2ab70905c04f85dff750e4628f3,
     type: 3}
-  RedTeamSize: 1
-  BlueTeamSize: 1
-  GreenTeamSize: 1
-  IndependentAgentsSize: 3
+  RedTeamSize: 6
+  BlueTeamSize: 0
+  GreenTeamSize: 0
+  IndependentAgentsSize: 0
   RedMat: {fileID: 2100000, guid: d7324fc0609580f46994727178d65584, type: 2}
   BlueMat: {fileID: 2100000, guid: 38a9dbd64a2357b4fa5a27880b3327bd, type: 2}
   GreenMat: {fileID: 2100000, guid: d87b7651728a9a14292c9bd47f5b17ba, type: 2}

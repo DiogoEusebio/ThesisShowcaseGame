@@ -196,7 +196,7 @@ public class TetrahedronAgent : Agent
                 Transform ResourceToDeliver = GetComponentInChildren<Resource>().transform;
                 GoalList.Add(new DeliverResourceGoal(transform, ResourceToDeliver, GetClosestAgentTransform()));
                 GetActionsFormSpecificGoal(GoalList.Find((goal) => goal.GetName() == "DeliverResourceGoal"));
-                Debug.Log("Collected Resource, now delivering");
+                //Debug.Log("Collected Resource, now delivering");
                 delivering = true;
             }
         }

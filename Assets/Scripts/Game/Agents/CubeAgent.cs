@@ -22,11 +22,32 @@ public class CubeAgent : Agent
         else
         {
             //ContestObjective();
-            CaptureFlag();
+            //CaptureFlag();
+            ProtectAlly();
         }
     }
     protected override void GenerateBasicAgentGoals()
     {
-        GoalList.Add(new CaptureFlagGoal(transform));
+        Transform AllyToDefend = GameObject.FindWithTag("AgentManager").GetComponent<AgentManager>().GetClosestTeammate(transform);
+        Debug.Log(AllyToDefend);
+        GoalList.Add(new ProtectTeammateGoal(transform, AllyToDefend));
+    }
+    private void ProtectAlly()
+    {
+        GoalBeingPursued = GoalList.Find((goal) => goal.GetName() == "ProtectTeammateGoal");
+        ActionToExecute = ActionList.Find((action) => action.GetName() == "ShieldAllyAction");
+        if(ActionToExecute.Perform() == Action.State.NotBeingExecuted)
+        {
+            Debug.Log("CUBE NOT EXECUTING");
+            //my ally probably died or I dont have allies
+            //TODO: CAREFULL DEAL WITH ALLY DINAMICALY STOPING BEING ALLY
+            GoalBeingPursued.SetGoalState(Goal.State.Achieved);
+            RemoveAchivedGoal(GoalBeingPursued);
+            RemoveActionsAssociatedToGoal(GoalBeingPursued);
+
+            Transform AllyToDefend = GameObject.FindWithTag("AgentManager").GetComponent<AgentManager>().GetClosestTeammate(transform);
+            GoalList.Add(new ProtectTeammateGoal(transform, AllyToDefend));
+            GetActionsFormSpecificGoal(GoalList.Find((goal) => goal.GetName() == "ProtectTeammateGoal"));
+        }
     }
 }
