@@ -7,7 +7,6 @@ public class CaptureFlagAction : Action
     private Transform AgentTransform;
     private Vector3 targetPosition;
     private Vector3 direction;
-    private float movementSpeed = 10.0f;
     private Transform CapturedFlag = null;
 
     public CaptureFlagAction(Transform Agent)

@@ -8,7 +8,6 @@ public class DeliverResourceAction : Action
     private Transform TargetAgentTransform;
     private Transform ResourceTransform;
     private Vector3 direction;
-    private float movementSpeed = 10.0f;
     // Start is called before the first frame update
     public DeliverResourceAction(Transform Agent, Transform Resource, Transform TargetAgent)
     {
@@ -30,7 +29,7 @@ public class DeliverResourceAction : Action
     public override State Perform()
     {
         //Debug.Log(TargetAgentTransform + " | " + ResourceTransform);
-        if (TargetAgentTransform.GetComponent<Agent>().GetIsDead() || ResourceTransform == null)
+        if (ResourceTransform == null || TargetAgentTransform == null || TargetAgentTransform.GetComponent<Agent>().GetIsDead())
         {
             Debug.Log("either there are no agents to delivere resources to, or this agent has no resource collected");
             return State.NotBeingExecuted;

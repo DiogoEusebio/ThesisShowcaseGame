@@ -7,7 +7,6 @@ public class MoveToPositionAction : Action
     private Transform agentTransform;
     private Vector3 targetPosition;
     private Vector3 direction;
-    private float movementSpeed = 10.0f;
     public MoveToPositionAction(Transform AgentTransform, Vector3 v)
     {
         name = "MoveToPositionAction";

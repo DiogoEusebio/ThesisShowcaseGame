@@ -62,6 +62,10 @@ public class Bullet : MonoBehaviour
                     Destroy(this.gameObject);
                 }
             }
+            else
+            { //cube blocks shot!
+                Destroy(this.gameObject);
+            }
         }  
     }
 }

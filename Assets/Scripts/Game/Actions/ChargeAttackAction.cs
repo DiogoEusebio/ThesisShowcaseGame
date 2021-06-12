@@ -7,11 +7,11 @@ public class ChargeAttackAction : Action
     private Transform agentTransform;
     private Transform enemyTransform;
     private float ChargeSpeed = 50.0f;
-    private float WalkUpSpeed = 10.0f;
+    //private float WalkUpSpeed = 10.0f;
     private float ChargeDamage = 50.0f;
     private float CooldownTimer = 0.0f;
     private float CooldownTime = 10.0f;
-    private float movementSpeed;
+    private float Speed;
     public ChargeAttackAction(Transform AgentTransform, Transform EnemyTransform)
     {
         name = "ChargeAttackAction";
@@ -33,7 +33,7 @@ public class ChargeAttackAction : Action
         //if (CooldownTimer <= 0.0f && Vector3.Distance(agentTransform.position, enemyTransform.position) <= 5.0f)
         if(Vector3.Distance(agentTransform.position, enemyTransform.position) <= 5.0f)
         {
-            movementSpeed = ChargeSpeed;
+            Speed = ChargeSpeed;
             //simple way to check collision, but results in single target damage even when "colliding" with multiple enemies at once
             if (Vector3.Distance(agentTransform.position, enemyTransform.position) <= 0.49f)
             {
@@ -46,9 +46,9 @@ public class ChargeAttackAction : Action
         else
         {
             //Debug.Log("Enemy Far Away | My pos:" + agentTransform.position);
-            movementSpeed = WalkUpSpeed;
+            Speed = movementSpeed;
         }
-        agentTransform.position += direction * movementSpeed * Time.deltaTime;
+        agentTransform.position += direction * Speed * Time.deltaTime;
         return State.BeingExecuted;
     }
     public void SetClossestEnemy(Transform EnemyTransform)

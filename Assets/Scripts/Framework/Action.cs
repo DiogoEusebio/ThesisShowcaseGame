@@ -4,6 +4,7 @@ using UnityEngine;
 
 public abstract class Action
 {
+    protected float movementSpeed = 5.0f;
     public enum State
     {
         NotBeingExecuted,

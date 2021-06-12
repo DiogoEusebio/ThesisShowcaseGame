@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Agent : MonoBehaviour
 {
@@ -14,7 +15,7 @@ public class Agent : MonoBehaviour
     public bool isDead = false;
     protected float respawnTimer;
     protected Transform capturedFlag;
-    private Vector3 targetLookAtPosition;
+    private Slider HealthBar;
     public enum AgentType
     {
         Cube,
@@ -56,12 +57,18 @@ public class Agent : MonoBehaviour
     public List<Action> GetActionList(){ return ActionList; }
     public bool GetIsDead() { return isDead; }
     public void SetIsDead(bool value) { isDead = value; }
-    public void SetMaxHP(float newMaxHPvalue) { MaxHP = newMaxHPvalue; /*HealthBar.SetMaxHealth((int)newMaxHPvalue);*/ }
-    public void SetCurrentHPtoMax() { CurrentHP = MaxHP; }
+    public void SetMaxHP(float newMaxHPvalue)
+    {
+        MaxHP = newMaxHPvalue;
+        HealthBar = GetComponentInChildren<Canvas>().GetComponentInChildren<Slider>();
+        HealthBar.value = ((int)newMaxHPvalue);
+    }
+    public void SetCurrentHPtoMax() { CurrentHP = MaxHP; HealthBar.value = (int)MaxHP; }
     public void TakeDamage(float dmg)
     {
         //Debug.Log("current Hp: " + CurrentHP);
         CurrentHP -= dmg;
+        HealthBar.value -= (int)dmg;
         /*HealthBar.SetHealth((int)CurrentHP);*/
         if(CurrentHP <= 0)
         {

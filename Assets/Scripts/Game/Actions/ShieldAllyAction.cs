@@ -10,7 +10,6 @@ public class ShieldAllyAction : Action
     private Vector3 directionOffset;
     private Vector3 direction;
     private Vector3 TargetPosition;
-    private float movementSpeed = 10.0f;
 
     public ShieldAllyAction(Transform Agent, Transform TargetAgent)
     {
@@ -22,7 +21,7 @@ public class ShieldAllyAction : Action
     }
     public override State Perform()
     {
-        if (AllyTransform.GetComponent<Agent>().GetIsDead())
+        if (AllyTransform == null || AllyTransform.GetComponent<Agent>().GetIsDead())
         {
             Debug.Log("My ally is dead I can no longer protect him, I have failed ;_;");
             return Action.State.NotBeingExecuted;

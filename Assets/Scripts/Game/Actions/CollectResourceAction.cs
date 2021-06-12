@@ -7,7 +7,6 @@ public class CollectResourceAction : Action
     private Transform AgentTransform;
     private Vector3 targetPosition;
     private Vector3 direction;
-    private float movementSpeed = 10.0f;
     private bool executed = false;
     // Start is called before the first frame update
     public CollectResourceAction(Transform Agent)
