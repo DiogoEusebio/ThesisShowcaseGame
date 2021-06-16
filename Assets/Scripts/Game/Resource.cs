@@ -22,6 +22,7 @@ public class Resource : MonoBehaviour
     {
         //Do something
         Debug.Log(Agent + " Consumed a resource");
+        Agent.GetComponent<Agent>().ConsumeResourceToHeal();
 
         Destroy(this.gameObject);
     }

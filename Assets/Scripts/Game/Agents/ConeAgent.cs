@@ -11,7 +11,7 @@ public class ConeAgent : Agent
     {
         SetMaxHP(100.0f);
         SetCurrentHPtoMax();
-        GenerateBasicAgentGoals();
+        //GenerateBasicAgentGoals();
         GetActionsFromGoals();
     }
     

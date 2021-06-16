@@ -44,6 +44,10 @@ public class AgentManager : MonoBehaviour
         {
             agentList.Add(ag.gameObject);
         }
+        foreach(Agent ag in Greenteam.GetComponentsInChildren<Agent>())
+        {
+            agentList.Add(ag.gameObject);
+        }
 
         roleManager = new RoleManager(agentList);
     }
@@ -88,9 +92,29 @@ public class AgentManager : MonoBehaviour
         }
         return numberOfDeadEnemies;
     }
+    public Transform GetClossestEnemy(Transform agentTransform)
+    {
+        float distance = 1000.0f;
+        Transform ClossestEnemy = null;
+        List<GameObject> PotencialTargets = agentTransform.GetComponent<Agent>().GetRoleList().Find((role) => role.GetName() == "CompetitorRole").GetTargetAgents();
+        foreach (GameObject enemy in PotencialTargets)
+        {
+            if (enemy.GetComponent<Agent>().GetIsDead() == false)
+            {
+                float newDistance = Vector3.Distance(agentTransform.position, enemy.transform.position);
+                if (newDistance < distance)
+                {
+                    ClossestEnemy = enemy.transform;
+                    distance = newDistance;
+                }
+            }
+        }
+        return ClossestEnemy;
+    }
     //THIS METHOD IS TEMPORARY AND SHOUD GO TO THE AGENT AND BE CALCULATED BASED ON ROLE RELATIONS AND NOT TEAM PRESENCE
     public Transform GetClossestEnemy(Transform agentTransform, string MyTeam)
     {
+
         float distance = 1000.0f;
         Transform ClossestEnemy = null;
         if(MyTeam == "BlueTeam")
@@ -241,20 +265,19 @@ public class AgentManager : MonoBehaviour
     void GenerateBalancedTeamComps()
     {
         GameObject newObj;
-        for(int i = 0; i < RedTeamSize; i++) //Start at +2 because we dont want teams to only have a cube (because of their action pool)
+        for(int i = 0; i < RedTeamSize; i++)
         {
-            Debug.Log(i + " | " + (i % 3 + 2));
             newObj = GenerateAgentOfType(RedTeamSpawnPoint, Redteam.transform, i % 3 +1);
             newObj.GetComponent<Renderer>().material = RedMat;
             newObj.tag = "RedTeam";
         }
-        for (int i = 0; i < BlueTeamSize; i++) //Start at +2 because we dont want teams to only have a cube (because of their action pool)
+        for (int i = 0; i < BlueTeamSize; i++)
         {
             newObj = GenerateAgentOfType(BlueTeamSpawnPoint, Blueteam.transform, i % 3 +1);
             newObj.GetComponent<Renderer>().material = BlueMat;
             newObj.tag = "BlueTeam";
         }
-        for (int i = 0; i < GreenTeamSize; i++) //Start at +2 because we dont want teams to only have a cube (because of their action pool)
+        for (int i = 0; i < GreenTeamSize; i++)
         {
             newObj = GenerateAgentOfType(GreenTeamSpawnPoint, Greenteam.transform, i % 3 +1);
             newObj.GetComponent<Renderer>().material = GreenMat;

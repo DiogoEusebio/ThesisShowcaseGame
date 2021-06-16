@@ -15,6 +15,7 @@ public class RoleManager
     {
         SetTeammateRoles();
         SetCompetitorRoles();
+        SetProviderRoles();
         //Debug
         //Debug.Log("Agents and their relations with the first agent that was created");
         foreach (Role r in agentList[0].GetComponent<Agent>().GetRoleList())
@@ -29,7 +30,7 @@ public class RoleManager
     {
         foreach(GameObject ag in agentList)
         {
-            Role newTeammateRole = new TeammateRole();
+            Role newTeammateRole = new TeammateRole(ag.transform);
             ag.GetComponent<Agent>().RoleList.Add(newTeammateRole); //consider adding getter
             newTeammateRole.ComputeTargetAgentsList(ag.transform);
         }
@@ -40,9 +41,19 @@ public class RoleManager
     {
         foreach (GameObject ag in agentList)
         {
-            Role newCompetitorRole = new CompetitorRole();
+            Role newCompetitorRole = new CompetitorRole(ag.transform);
             ag.GetComponent<Agent>().RoleList.Add(newCompetitorRole); //consider adding getter
             newCompetitorRole.ComputeTargetAgentsList(ag.transform);
+        }
+    }
+    void SetProviderRoles()
+    {
+        GameObject[] independentAgents = GameObject.FindGameObjectsWithTag("IndependentAgent");
+        foreach (GameObject ag in independentAgents)
+        {
+            Role newProviderRole = new ProviderRole(ag.transform);
+            ag.GetComponent<Agent>().GetRoleList().Add(newProviderRole);
+            newProviderRole.ComputeTargetAgentsList(ag.transform);
         }
     }
 }

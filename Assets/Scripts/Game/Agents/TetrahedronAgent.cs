@@ -38,8 +38,7 @@ public class TetrahedronAgent : Agent
         //Vector3 ObjPos = objective.transform.position;
         //Debug.Log(ObjPos);
         //GoalList.Add(new ContestObjectiveGoal(transform, new Vector3(Random.Range(ObjPos.x - 3.0f, ObjPos.x + 3.0f), 1.0f, Random.Range(ObjPos.z - 3.0f, ObjPos.z + 3.0f))));
-        GoalList.Add(new CollectResourcesGoal(transform));
-        GoalList.Add(new MoveToTargetCoordsGoal(transform, new Vector3(Random.Range(-12f, 12f), 1.0f, Random.Range(-7f, 22f))));
+        //GoalList.Add(new CollectResourcesGoal(transform));
         //GoalList.Add(new CaptureFlagGoal(transform));
     }
     private Transform GetClosestAgentTransform()
@@ -57,7 +56,7 @@ public class TetrahedronAgent : Agent
         foreach(GameObject AgentObj in AllAgent)
         {
             float newDist = Vector3.Distance(AgentObj.transform.position, transform.position);
-            if (newDist < maxDist && !AgentObj.GetComponent<Agent>().GetIsDead())
+            if (newDist < maxDist && !AgentObj.GetComponent<Agent>().GetIsDead() && AgentObj.GetComponent<TetrahedronAgent>() == null)
             {
                 maxDist = newDist;
                 ClossestAgent = AgentObj.transform;
@@ -86,54 +85,95 @@ public class TetrahedronAgent : Agent
     private void UpdateAllegiance()
     {
         Material myMat = transform.GetComponent<Renderer>().material;
-        Vector4 ColorVec = new Vector4(0.0f, 0.0f, 0.0f, 0.0f);
+        Vector4 ColorVec = new Vector4(0.0f, 0.0f, 0.0f, 1.0f);
         if(BlueTeamAllegianceScore == RedTeamAllegianceScore && BlueTeamAllegianceScore == GreenTeamAllegianceScore && BlueTeamAllegianceScore != 0)
         {
             BlueTeamAllegianceScore = 0;
             RedTeamAllegianceScore = 0;
             GreenTeamAllegianceScore = 0;
             myMat.color = ColorVec;
-            //remove all relations (cut roles from players)
+            //remove all relations (cut from player's roles)
         }
         if(BlueTeamAllegianceScore - RedTeamAllegianceScore >= AllegianceScoreTreshold)
         {
             BlueTeamAllegianceScore = AllegianceScoreTreshold;
             ColorVec.z = 1;
-            //Set Red as enemy and blue as teammate
         }
         if(BlueTeamAllegianceScore - GreenTeamAllegianceScore >= AllegianceScoreTreshold)
         {
             BlueTeamAllegianceScore = AllegianceScoreTreshold;
             ColorVec.z = 1;
-            //Set Green as enemy and blue as teammate
         }
         if(RedTeamAllegianceScore - BlueTeamAllegianceScore >= AllegianceScoreTreshold)
         {
-            Debug.Log("Red > Blue");
             RedTeamAllegianceScore = AllegianceScoreTreshold;
             ColorVec.x = 1;
-            //Set Blue as enemy and Red as teammate
         }
         if(RedTeamAllegianceScore - GreenTeamAllegianceScore >= AllegianceScoreTreshold)
         {
-            Debug.Log("Red > Green");
             RedTeamAllegianceScore = AllegianceScoreTreshold;
             ColorVec.x = 1;
-            //Set Green as enemy and Red as teammate
         }
-        if(GreenTeamAllegianceScore -BlueTeamAllegianceScore >= AllegianceScoreTreshold)
+        if(GreenTeamAllegianceScore - BlueTeamAllegianceScore >= AllegianceScoreTreshold)
         {
             GreenTeamAllegianceScore = AllegianceScoreTreshold;
             ColorVec.y = 1;
-            //Set Blue as enemy and Green as teammate
         }
-        if(GreenTeamAllegianceScore -RedTeamAllegianceScore >= AllegianceScoreTreshold)
+        if(GreenTeamAllegianceScore - RedTeamAllegianceScore >= AllegianceScoreTreshold)
         {
             GreenTeamAllegianceScore = AllegianceScoreTreshold;
             ColorVec.y = 1;
-            //Set Red as enemy and Green as teammate
         }
         myMat.color = ColorVec;
+        UpdateRelations();
+    }
+    private void UpdateRelations()
+    {
+
+        //TODO: UPDATEASPROVIDABLE
+        Material myMat = transform.GetComponent<Renderer>().material;
+        if (myMat.color.Equals(Color.black))
+        {
+            //no allies no enemies
+            UpdateAsTeammateToTeam(false, false, false);
+            UpdateAsCompetitorToTeam(false, false, false);
+        }
+        else if (myMat.color.Equals(Color.blue))
+        {
+            //ally with Blue, enemy with rest
+            UpdateAsTeammateToTeam(false, true, false);
+            UpdateAsCompetitorToTeam(true, false, true);
+        }
+        else if (myMat.color.Equals(Color.red))
+        {
+            //ally with red enemy with rest
+            UpdateAsTeammateToTeam(true, false, false);
+            UpdateAsCompetitorToTeam(false, true, true);
+        }
+        else if (myMat.color.Equals(Color.green))
+        {
+            //ally with green enemy with rest
+            UpdateAsTeammateToTeam(false, false, true);
+            UpdateAsCompetitorToTeam(true, true, false);
+        }
+        else if (myMat.color.Equals(Color.magenta))
+        {
+            //ally with red and blue, enemy with green
+            UpdateAsTeammateToTeam(true, true, false);
+            UpdateAsCompetitorToTeam(false, false, true);
+        }
+        else if (myMat.color.Equals(Color.yellow))
+        {
+            //ally with green and red, enemy with blue
+            UpdateAsTeammateToTeam(true, false, true);
+            UpdateAsCompetitorToTeam(false, true, false);
+        }
+        else if (myMat.color.Equals(Color.cyan))
+        {
+            //ally with green and blue, enemy with red
+            UpdateAsTeammateToTeam(false, true, true);
+            UpdateAsCompetitorToTeam(true, false, false);
+        }
     }
     private void GatherAndDeliverResources()
     {
@@ -202,7 +242,68 @@ public class TetrahedronAgent : Agent
         }
         else
         {
-            //WalkRandomly();
+            //WalkRandomly(); just stop
         }
     }
+    private void UpdateAsTeammateToTeam(bool RedTeamBool, bool BlueTeamBool, bool GreenTeamBool)
+    {
+        //if true add as teammate, if false remove
+        for(int i = 0; i < 3; i++) //hardcoded for 3 teams, IDC
+        {
+            GameObject[] TargetTeam = null; //ignorable assignment so compiler accepts this
+            bool activeBool = false;        //ignorable assignment so compiler accepts this
+            if (i == 0) { TargetTeam = GameObject.FindGameObjectsWithTag("RedTeam"); activeBool = RedTeamBool; }
+            if (i == 1) { TargetTeam = GameObject.FindGameObjectsWithTag("BlueTeam"); activeBool = BlueTeamBool; }
+            if (i == 2) { TargetTeam = GameObject.FindGameObjectsWithTag("GreenTeam"); activeBool = GreenTeamBool;  }
+            foreach(GameObject Teammate in TargetTeam)
+            {
+                if (Teammate != this.transform.gameObject)
+                {
+                    if (activeBool)
+                    {
+
+                        Teammate.GetComponent<Agent>().GetRoleList().Find((role) => role.GetName() == "TeammateRole").AddTeammate(this.transform);
+                        Teammate.GetComponent<Agent>().GetRoleList().Find((role) => role.GetName() == "TeammateRole").DebugLogTeammates();
+
+                    }
+                    else
+                    {
+                        Teammate.GetComponent<Agent>().GetRoleList().Find((role) => role.GetName() == "TeammateRole").RemoveTeammate(this.transform);
+                    }
+                }
+            }
+        }
+    }
+    private void UpdateAsCompetitorToTeam(bool RedTeamBool, bool BlueTeamBool, bool GreenTeamBool)
+    {
+        //if true add as teammate, if false remove
+        for (int i = 0; i < 3; i++) //hardcoded for 3 teams, IDC
+        {
+            GameObject[] TargetTeam = null; //ignorable assignment so compiler accepts this
+            bool activeBool = false;        //ignorable assignment so compiler accepts this
+            if (i == 0) { TargetTeam = GameObject.FindGameObjectsWithTag("RedTeam"); activeBool = RedTeamBool; }
+            if (i == 1) { TargetTeam = GameObject.FindGameObjectsWithTag("BlueTeam"); activeBool = BlueTeamBool; }
+            if (i == 2) { TargetTeam = GameObject.FindGameObjectsWithTag("GreenTeam"); activeBool = GreenTeamBool; }
+            foreach (GameObject Competitor in TargetTeam)
+            {
+                if (Competitor != this.transform.gameObject)
+                {
+                    //Competitor.GetComponent<Agent>().DebugLogRoles();
+                    if (activeBool)
+                    {
+                        Competitor.GetComponent<Agent>().GetRoleList().Find((role) => role.GetName() == "CompetitorRole").AddCompetitor(this.transform);
+                        Competitor.GetComponent<Agent>().GetRoleList().Find((role) => role.GetName() == "CompetitorRole").DebugLogCompetitors();
+
+                    }
+                    else
+                    {
+                        Competitor.GetComponent<Agent>().GetRoleList().Find((role) => role.GetName() == "CompetitorRole").RemoveCompetitor(this.transform);
+                        //Competitor.GetComponent<Agent>().GetRoleList().Find((role) => role.GetName() == "CompetitorRole").DebugLogCompetitors();
+                    }
+                }
+            }
+        }
+    }
+
+
 }

@@ -28,8 +28,9 @@ public class DeliverResourceAction : Action
     public override Transform GetTargetAgent() { return TargetAgentTransform; }
     public override State Perform()
     {
-        //Debug.Log(TargetAgentTransform + " | " + ResourceTransform);
-        if (ResourceTransform == null || TargetAgentTransform == null || TargetAgentTransform.GetComponent<Agent>().GetIsDead())
+        //Debug.Log(TargetAgentTransform + " | " + ResourceTransform); //consider this case: || ResourceTransform == null
+        //PROBLEM HERE; HELPPP!!!
+        if (TargetAgentTransform == null || ResourceTransform == null || TargetAgentTransform.GetComponent<Agent>().GetIsDead())
         {
             Debug.Log("either there are no agents to delivere resources to, or this agent has no resource collected");
             return State.NotBeingExecuted;
@@ -40,7 +41,7 @@ public class DeliverResourceAction : Action
             direction.Normalize();
             AgentTransform.position += direction * (movementSpeed * 1.01f) * Time.deltaTime; //+1% movespeed to garantee that the agent catches up to the target
             LookAt();
-            if(Vector3.Distance(AgentTransform.position, TargetAgentTransform.position) < 1.0f) //relaxed distance check so that agents dont clup for long
+            if (Vector3.Distance(AgentTransform.position, TargetAgentTransform.position) < 1.0f) //relaxed distance check so that agents dont clup for long
             {
                 ResourceTransform.parent = null;
                 ResourceTransform.GetComponentInChildren<Resource>().ConsumedBy(TargetAgentTransform);

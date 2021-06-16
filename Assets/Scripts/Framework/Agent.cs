@@ -16,6 +16,14 @@ public class Agent : MonoBehaviour
     protected float respawnTimer;
     protected Transform capturedFlag;
     private Slider HealthBar;
+    private int[,] HeatMap;
+
+    float MinX = -20.0f; //rough Coordinates of the arena for a specefic unity scene
+    float MaxX = 20.0f;
+    float MinZ = -10.0f;
+    float MaxZ = 25.0f;
+    float RangeX, RangeZ, IncrementX, IncrementZ;
+    int xSize, zSize;
     public enum AgentType
     {
         Cube,
@@ -54,6 +62,7 @@ public class Agent : MonoBehaviour
     public void SetAgentType(AgentType at) { agentType = at; }
     public AgentType GetAgentType() { return agentType; }
     public List<Role> GetRoleList() { return RoleList; }
+    public List<Goal> GetGoalList() { return GoalList; }
     public List<Action> GetActionList(){ return ActionList; }
     public bool GetIsDead() { return isDead; }
     public void SetIsDead(bool value) { isDead = value; }
@@ -63,6 +72,7 @@ public class Agent : MonoBehaviour
         HealthBar = GetComponentInChildren<Canvas>().GetComponentInChildren<Slider>();
         HealthBar.value = ((int)newMaxHPvalue);
     }
+
     public void SetCurrentHPtoMax() { CurrentHP = MaxHP; HealthBar.value = (int)MaxHP; }
     public void TakeDamage(float dmg)
     {
@@ -73,6 +83,19 @@ public class Agent : MonoBehaviour
         if(CurrentHP <= 0)
         {
             KillAgent();
+        }
+    }
+    public void Heal(float val)
+    {
+        if(CurrentHP + val >= MaxHP)
+        {
+            CurrentHP = MaxHP;
+            HealthBar.value = (int)MaxHP; //works cuz they have the same scale
+        }
+        else
+        {
+            CurrentHP += val;
+            HealthBar.value += (int)val;
         }
     }
     public bool HasCapturedFlag()
@@ -90,6 +113,22 @@ public class Agent : MonoBehaviour
     public void DropFlag()
     {
         capturedFlag = null;
+    }
+    public void ConsumeResourceToHeal()
+    {
+        //heal Self if damaged
+        if(CurrentHP != MaxHP)
+        {
+            Heal(100);
+        }
+        else
+        {
+            Role TeammateRole = RoleList.Find((role) => role.GetName() == "TeammateRole");
+            foreach (GameObject teammate in TeammateRole.GetTargetAgents())
+            {
+                teammate.GetComponent<Agent>().Heal(25);
+            }
+        }
     }
     public void GetActionsFromGoals()
     {
@@ -250,6 +289,15 @@ public class Agent : MonoBehaviour
         }
         Debug.Log(DebugLogGoalsString);
     }
+    public void DebugLogRoles()
+    {
+        string DebugLogRolesString = "";
+        foreach(Role r in RoleList)
+        {
+            DebugLogRolesString += " | " + r.GetName();
+        }
+        Debug.Log(DebugLogRolesString);
+    }
 
     //------------------------ AI/Behavior methods -----------------------------//
     public void WalkRandomly()
@@ -308,5 +356,44 @@ public class Agent : MonoBehaviour
         {
             Debug.Log("Waiting for Flags to spawn");
         }*/
+    }
+
+    public int[,] SetUpHeatMap()
+    {
+        RangeX = System.Math.Abs(MaxX - MinX);
+        RangeZ = System.Math.Abs(MaxZ - MinZ);
+        IncrementX = RangeX / xSize;
+        IncrementZ = RangeZ / zSize;
+        int[,] HeatMap = new int[xSize, zSize];
+        
+        for (int i = 0; i < xSize; i++)
+        {
+            for(int j = 0; j < zSize; j++)
+            {
+                HeatMap[i,j] = 0;
+            }
+        }
+        return HeatMap;
+
+    }
+    public void UpdateHeatMap()
+    {
+        Vector3 currPos = this.transform.position;
+        int indexX = 0, indexZ = 0; //ignore assigment
+        for (int i = 0; i < xSize; i++)
+        {
+            if (currPos.x < MinX + i * IncrementX && currPos.x > MinX + (i + 1) * IncrementX)
+            {
+                indexX = i;
+            }
+        }
+        for (int i = 0; i < zSize; i++)
+        {
+            if (currPos.z < MinZ + i * IncrementZ && currPos.z > MinZ + (i + 1) * IncrementZ)
+            {
+                indexZ = i;
+            }
+        }
+        HeatMap[indexX, indexZ] ++;
     }
 }

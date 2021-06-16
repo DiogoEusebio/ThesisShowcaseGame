@@ -8,8 +8,9 @@ public class CubeAgent : Agent
     {
         SetMaxHP(100.0f);
         SetCurrentHPtoMax();
-        GenerateBasicAgentGoals();
+        //GenerateBasicAgentGoals();
         GetActionsFromGoals();
+        //DebugLogRoles();
     }
 
     protected override void Update()

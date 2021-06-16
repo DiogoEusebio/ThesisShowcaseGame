@@ -23,7 +23,7 @@ public class ShieldAllyAction : Action
     {
         if (AllyTransform == null || AllyTransform.GetComponent<Agent>().GetIsDead())
         {
-            Debug.Log("My ally is dead I can no longer protect him, I have failed ;_;");
+            //Debug.Log("My ally is dead I can no longer protect him, I have failed ;_;");
             return Action.State.NotBeingExecuted;
         }
         allyDirection = AllyTransform.position - AgentTransform.position;
@@ -33,6 +33,7 @@ public class ShieldAllyAction : Action
         directionOffset.Normalize();
         TargetPosition = AllyTransform.position + directionOffset;
         direction = TargetPosition - AgentTransform.position;
+        direction.Normalize();
 
         AgentTransform.position += direction * movementSpeed * Time.deltaTime;
         return Action.State.BeingExecuted;

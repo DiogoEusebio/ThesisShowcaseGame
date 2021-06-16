@@ -9,7 +9,7 @@ public class SphereAgent : Agent
     {
         SetMaxHP(100.0f);
         SetCurrentHPtoMax();
-        GenerateBasicAgentGoals();
+        //GenerateBasicAgentGoals();
         GetActionsFromGoals();
     }
 
@@ -23,18 +23,11 @@ public class SphereAgent : Agent
         else
         {
             CaptureFlag();
-            if(Vector3.Distance(GameObject.FindGameObjectWithTag("AgentManager").GetComponent<AgentManager>().GetClossestEnemy(transform, transform.tag).position, transform.position) < 5.0f)
+            if(Vector3.Distance(GameObject.FindGameObjectWithTag("AgentManager").GetComponent<AgentManager>().GetClossestEnemy(transform).position, transform.position) < 5.0f)
             {
                 ChargeAtEnemy();
             }
         }
-    }
-
-    protected override void GenerateBasicAgentGoals()
-    {
-        Transform clossestEnemyTransform = GameObject.FindWithTag("AgentManager").GetComponent<AgentManager>().GetClossestEnemy(transform, transform.gameObject.tag);
-        GoalList.Add(new AttackEnemyGoal(transform, clossestEnemyTransform));
-        GoalList.Add(new CaptureFlagGoal(transform));
     }
     void ChargeAtEnemy()
     {
