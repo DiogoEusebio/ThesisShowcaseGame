@@ -7,6 +7,7 @@ public abstract class Role
     protected Transform selfAgent;
     protected string name;
     protected List<GameObject> TargetAgentsList;
+    //protected List<Goal> GoalList;
 
     public List<GameObject> GetTargetAgents() { return TargetAgentsList; }
 

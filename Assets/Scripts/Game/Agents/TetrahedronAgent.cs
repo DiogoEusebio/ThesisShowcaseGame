@@ -16,6 +16,8 @@ public class TetrahedronAgent : Agent
         GenerateBasicAgentGoals();
         GetActionsFromGoals();
         UpdateAllegiance();
+
+        InitAgentLog();
     }
 
     protected override void Update()
@@ -137,42 +139,49 @@ public class TetrahedronAgent : Agent
             //no allies no enemies
             UpdateAsTeammateToTeam(false, false, false);
             UpdateAsCompetitorToTeam(false, false, false);
+            LogAgentActionResult("Lost Relations");
         }
         else if (myMat.color.Equals(Color.blue))
         {
             //ally with Blue, enemy with rest
             UpdateAsTeammateToTeam(false, true, false);
             UpdateAsCompetitorToTeam(true, false, true);
+            LogAgentActionResult("Allied with Blue Team, Enemy with Red and Green Teams");
         }
         else if (myMat.color.Equals(Color.red))
         {
             //ally with red enemy with rest
             UpdateAsTeammateToTeam(true, false, false);
             UpdateAsCompetitorToTeam(false, true, true);
+            LogAgentActionResult("Allied with Red Team, Enemy with Blue and Green Teams");
         }
         else if (myMat.color.Equals(Color.green))
         {
             //ally with green enemy with rest
             UpdateAsTeammateToTeam(false, false, true);
             UpdateAsCompetitorToTeam(true, true, false);
+            LogAgentActionResult("Allied with Green Team, Enemy with Red and Blue Teams");
         }
         else if (myMat.color.Equals(Color.magenta))
         {
             //ally with red and blue, enemy with green
             UpdateAsTeammateToTeam(true, true, false);
             UpdateAsCompetitorToTeam(false, false, true);
+            LogAgentActionResult("Allied with Red and Blue Teams, Enemy with Green Team");
         }
         else if (myMat.color.Equals(Color.yellow))
         {
             //ally with green and red, enemy with blue
             UpdateAsTeammateToTeam(true, false, true);
             UpdateAsCompetitorToTeam(false, true, false);
+            LogAgentActionResult("Allied with Red and Green Teams, Enemy with Blue Team");
         }
         else if (myMat.color.Equals(Color.cyan))
         {
             //ally with green and blue, enemy with red
             UpdateAsTeammateToTeam(false, true, true);
             UpdateAsCompetitorToTeam(true, false, false);
+            LogAgentActionResult("Allied with Blue and Green Teams, Enemy with Red Team");
         }
     }
     private void GatherAndDeliverResources()

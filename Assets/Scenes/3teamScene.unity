@@ -534,7 +534,7 @@ MonoBehaviour:
   HealtBarPrefab: {fileID: 4031392805482751914, guid: 259ff2ab70905c04f85dff750e4628f3,
     type: 3}
   RedTeamSize: 3
-  BlueTeamSize: 3
+  BlueTeamSize: 6
   GreenTeamSize: 3
   IndependentAgentsSize: 3
   RedMat: {fileID: 2100000, guid: d7324fc0609580f46994727178d65584, type: 2}
@@ -2587,7 +2587,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &2111981069
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2668,7 +2668,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2111981068}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.2, y: 1, z: 19.92}
+  m_LocalPosition: {x: 17.02, y: 1, z: 24.21}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

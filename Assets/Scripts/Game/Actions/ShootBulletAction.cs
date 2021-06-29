@@ -17,6 +17,7 @@ public class ShootBulletAction : Action
         GameObject b = GameObject.Instantiate(bulletPrefab, agentTransform.position, Quaternion.LookRotation(agentTransform.forward) * new Quaternion(0.5f, 0.5f, 0.5f, 0.5f));
         b.GetComponent<Bullet>().setDirection(agentTransform.forward);
         b.GetComponent<Bullet>().setParent(agentTransform);
+        agentTransform.GetComponent<Agent>().LogAgentActionResult("Shoot bullet | Direction: " + Vector3.Normalize(agentTransform.forward));
         ActionState = State.Executed;
         return ActionState;
         

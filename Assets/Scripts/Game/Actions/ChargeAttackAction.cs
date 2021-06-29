@@ -37,7 +37,9 @@ public class ChargeAttackAction : Action
             //simple way to check collision, but results in single target damage even when "colliding" with multiple enemies at once
             if (Vector3.Distance(agentTransform.position, enemyTransform.position) <= 0.49f)
             {
-                enemyTransform.GetComponent<Agent>().TakeDamage(ChargeDamage);
+                Agent enemyAgent = enemyTransform.GetComponent<Agent>();
+                agentTransform.GetComponent<Agent>().LogAgentActionResult("Charged at enemy: " + enemyAgent.GetAgentType() + enemyAgent.GetAgentID());
+                enemyAgent.TakeDamage(ChargeDamage);
                 CooldownTimer = CooldownTime;
                 return State.Executed;
             }

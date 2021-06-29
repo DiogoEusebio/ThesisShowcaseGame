@@ -21,6 +21,7 @@ public class AgentManager : MonoBehaviour
     public Material BlueMat;
     public Material GreenMat;
     private RoleManager roleManager;
+    private int AgentID = 0;
 
     private Vector3 RedTeamSpawnPoint = new Vector3(12.87f, 1.0f, 14.77f);
     private Vector3 BlueTeamSpawnPoint = new Vector3(-12.87f, 1.0f, 14.77f);
@@ -267,19 +268,19 @@ public class AgentManager : MonoBehaviour
         GameObject newObj;
         for(int i = 0; i < RedTeamSize; i++)
         {
-            newObj = GenerateAgentOfType(RedTeamSpawnPoint, Redteam.transform, i % 3 +1);
+            newObj = GenerateAgentOfType(RedTeamSpawnPoint + new Vector3(Random.Range(-2.5f, 2.5f), 0.0f, Random.Range(-2.5f, 2.5f)), Redteam.transform, i % 3 +1);
             newObj.GetComponent<Renderer>().material = RedMat;
             newObj.tag = "RedTeam";
         }
         for (int i = 0; i < BlueTeamSize; i++)
         {
-            newObj = GenerateAgentOfType(BlueTeamSpawnPoint, Blueteam.transform, i % 3 +1);
+            newObj = GenerateAgentOfType(BlueTeamSpawnPoint + new Vector3(Random.Range(-2.5f, 2.5f), 0.0f, Random.Range(-2.5f, 2.5f)), Blueteam.transform, i % 3 +1);
             newObj.GetComponent<Renderer>().material = BlueMat;
             newObj.tag = "BlueTeam";
         }
         for (int i = 0; i < GreenTeamSize; i++)
         {
-            newObj = GenerateAgentOfType(GreenTeamSpawnPoint, Greenteam.transform, i % 3 +1);
+            newObj = GenerateAgentOfType(GreenTeamSpawnPoint + new Vector3(Random.Range(-2.5f, 2.5f), 0.0f, Random.Range(-2.5f, 2.5f)), Greenteam.transform, i % 3 +1);
             newObj.GetComponent<Renderer>().material = GreenMat;
             newObj.tag = "GreenTeam";
         }
@@ -338,21 +339,25 @@ public class AgentManager : MonoBehaviour
         {
             newObj = Instantiate(CubePrefab, spawnPoint, Quaternion.identity, parent);
             newObj.GetComponent<Agent>().SetAgentType(Agent.AgentType.Cube);
+            newObj.GetComponent<Agent>().SetAgentID(AgentID++);
         }
         else if (agentType == 2)
         {
             newObj = Instantiate(SpherePrefab, spawnPoint, Quaternion.identity, parent);
             newObj.GetComponent<Agent>().SetAgentType(Agent.AgentType.Sphere);
+            newObj.GetComponent<Agent>().SetAgentID(AgentID++);
         }
         else if (agentType == 3)
         {
             newObj = Instantiate(ConePrefab, spawnPoint, Quaternion.identity, parent);
             newObj.GetComponent<Agent>().SetAgentType(Agent.AgentType.Cone);
+            newObj.GetComponent<Agent>().SetAgentID(AgentID++);
         }
         else
         {
             newObj = Instantiate(TetraHedronPrefab, spawnPoint + new Vector3(0,1,0), Quaternion.identity, parent);
             newObj.GetComponent<Agent>().SetAgentType(Agent.AgentType.Tetrahedron);
+            newObj.GetComponent<Agent>().SetAgentID(AgentID++);
         }
         newObj.SetActive(true);
         return newObj;

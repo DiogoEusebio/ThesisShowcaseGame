@@ -158,7 +158,7 @@ public class CaptureFlagAction : Action
         if (Flags.Count == 0)
         {
             //change to exception or alike later
-            Vector3 err = new Vector3(1000f, 1000f, 1000f);
+            Vector3 err = new Vector3(0f, 0f, 0f);
             return err;
         }
         foreach (Transform t in Flags)
@@ -203,7 +203,9 @@ public class CaptureFlagAction : Action
     }
     public override void DropFlag()
     {
-        AgentTransform.GetComponentInChildren<Agent>().DropFlag();
+        Agent mySelf = AgentTransform.GetComponentInChildren<Agent>();
+        mySelf.DropFlag();
+        mySelf.LogAgentActionResult("Dropped Flag");
         //Debug.Log("Should be droping flag");
         CapturedFlag.gameObject.GetComponentInChildren<FlagObjective>().Dropped();
         CapturedFlag.localScale = new Vector3(1.0f, 1.0f, 1.0f);

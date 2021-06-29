@@ -11,6 +11,7 @@ public class CubeAgent : Agent
         //GenerateBasicAgentGoals();
         GetActionsFromGoals();
         //DebugLogRoles();
+        InitAgentLog();
     }
 
     protected override void Update()

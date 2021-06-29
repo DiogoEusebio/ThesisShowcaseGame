@@ -13,6 +13,7 @@ public class ConeAgent : Agent
         SetCurrentHPtoMax();
         //GenerateBasicAgentGoals();
         GetActionsFromGoals();
+        InitAgentLog();
     }
     
     protected override void Update()

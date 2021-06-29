@@ -5,12 +5,16 @@ using UnityEngine;
 public class SphereAgent : Agent
 {   
     private bool attackIsOnCoolDown = false;
+    private float timeToLayMineAgain = 7.0f;
+    private float layMineRate = 7.0f;
     protected override void Start()
     {
         SetMaxHP(100.0f);
         SetCurrentHPtoMax();
         //GenerateBasicAgentGoals();
         GetActionsFromGoals();
+        InitAgentLog();
+        //LogAgentActionResult("TESTING...");
     }
 
     protected override void Update()
@@ -23,10 +27,17 @@ public class SphereAgent : Agent
         else
         {
             CaptureFlag();
-            if(Vector3.Distance(GameObject.FindGameObjectWithTag("AgentManager").GetComponent<AgentManager>().GetClossestEnemy(transform).position, transform.position) < 5.0f)
+            //if(Vector3.Distance(GameObject.FindGameObjectWithTag("AgentManager").GetComponent<AgentManager>().GetClossestEnemy(transform).position, transform.position) < 5.0f)
+            //{
+            //  ChargeAtEnemy();
+            //}
+            if (timeToLayMineAgain <= 0.0f)
             {
-                ChargeAtEnemy();
+                LayMine();
+                timeToLayMineAgain = layMineRate;
+                Debug.Log(timeToLayMineAgain + " | " + layMineRate);
             }
+            timeToLayMineAgain -= Time.deltaTime;
         }
     }
     void ChargeAtEnemy()
@@ -55,5 +66,11 @@ public class SphereAgent : Agent
             //Debug.Log("Contesting objective");
             CaptureFlag();
         }
+    }
+    private void LayMine()
+    {
+        GoalBeingPursued = GoalList.Find((goal) => goal.GetName() == "AttackEnemyGoal");
+        ActionToExecute = GoalBeingPursued.GetActionsFromGoal().Find((action) => action.GetName() == "LayExplosiveMineAction");
+        ActionToExecute.Perform();
     }
 }

@@ -27,6 +27,7 @@ public class CollectResourceAction : Action
         if (executed)
         {
             //Debug.Log("executed");
+            AgentTransform.GetComponent<Agent>().LogAgentActionResult("Collected Resource");
             return Action.State.Executed;
         }
         else

@@ -14,7 +14,8 @@ public class AttackEnemyGoal : Goal
         }
         else if(AgentTransform.GetComponent<Agent>().GetAgentType() == Agent.AgentType.Sphere)
         {
-            ActionList.Add(new ChargeAttackAction(AgentTransform, EnemyTransform));
+            //ActionList.Add(new ChargeAttackAction(AgentTransform, EnemyTransform));
+            ActionList.Add(new LayExplosiveMineAction(AgentTransform));
             //consider adding lookAtEnemyAction (just havent done it because I dont want to deal with filtering duplicate actions(just yet))
         }
     }

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,6 +18,7 @@ public class Agent : MonoBehaviour
     protected Transform capturedFlag;
     private Slider HealthBar;
     private int[,] HeatMap;
+    private int AgentID;
 
     float MinX = -20.0f; //rough Coordinates of the arena for a specefic unity scene
     float MaxX = 20.0f;
@@ -60,7 +62,9 @@ public class Agent : MonoBehaviour
     }
     //--------------------- Gets and Sets -----------------------//
     public void SetAgentType(AgentType at) { agentType = at; }
+    public void SetAgentID(int id) { AgentID = id; }
     public AgentType GetAgentType() { return agentType; }
+    public int GetAgentID() { return AgentID; }
     public List<Role> GetRoleList() { return RoleList; }
     public List<Goal> GetGoalList() { return GoalList; }
     public List<Action> GetActionList(){ return ActionList; }
@@ -218,11 +222,10 @@ public class Agent : MonoBehaviour
             CapFlag.DropFlag();
         }
         isDead = true;
+        LogAgentActionResult("Died");
         this.transform.position = new Vector3(0.0f, -50.0f, 0.0f);
-        //Clear Roles, Goals and Actions
+        //Clear Goals and Actions
         ActionList = new List<Action>();
-        GoalList = new List<Goal>();
-        RoleList = new List<Role>();
         respawnTimer = 0.05f * Time.realtimeSinceStartup + 2.0f; //consider other equation
         RespawnAgent(respawnTimer);
     }
@@ -231,30 +234,25 @@ public class Agent : MonoBehaviour
         if (respawnTimer <= 0)
         {
             isDead = false;
+            SetMaxHP(100.0f);
+            SetCurrentHPtoMax();
+            //GetGoalsFromRoles();
+            GetActionsFromGoals();
+            DebugLogGoals();
+            DebugLogActions();
             if (transform.gameObject.CompareTag("BlueTeam"))
             {
                 transform.position = new Vector3(-12.87f + Random.Range(-2.5f, 2.5f), 1.0f, 14.77f + Random.Range(-2.5f, 2.5f)); //Hack: copy pasted value from AgentManager, consider doing this there/acess the variable
-                SetMaxHP(100.0f);
-                SetCurrentHPtoMax();
-                GenerateBasicAgentGoals();
-                GetActionsFromGoals();
             }
             else if (transform.gameObject.CompareTag("RedTeam"))
             {
                 transform.position = new Vector3(12.87f + Random.Range(-2.5f, 2.5f), 1.0f, 14.77f + Random.Range(-2.5f, 2.5f)); //Hack: copy pasted value from AgentManager, consider doing this there/acess the variable
-                SetMaxHP(100.0f);
-                SetCurrentHPtoMax();
-                GenerateBasicAgentGoals(); //problem here
-                GetActionsFromGoals();
             }
             else if (transform.gameObject.CompareTag("GreenTeam"))
             {
                 transform.position = new Vector3(0.0f + Random.Range(-2.5f, 2.5f), 1.0f, -7.0f + Random.Range(-2.5f, 2.5f)); //Hack: copy pasted value from AgentManager, consider doing this there/acess the variable
-                SetMaxHP(100.0f);
-                SetCurrentHPtoMax();
-                GenerateBasicAgentGoals(); //problem here
-                GetActionsFromGoals();
             }
+            LogAgentActionResult("Respawned");
         }
     }
     //-------------------------- Debug Methods -----------------------//
@@ -357,7 +355,7 @@ public class Agent : MonoBehaviour
             Debug.Log("Waiting for Flags to spawn");
         }*/
     }
-
+    //-------------------- LOG METHODS ---------------------------//
     public int[,] SetUpHeatMap()
     {
         RangeX = System.Math.Abs(MaxX - MinX);
@@ -395,5 +393,56 @@ public class Agent : MonoBehaviour
             }
         }
         HeatMap[indexX, indexZ] ++;
+    }
+    public void LogAgentActionResult(string Info)
+    {
+        //this may be redundant, because file are already created, but oh well...
+        string fileName = "\\" + agentType.ToString() + AgentID.ToString() + ".txt";
+        string path = @"\Assets\Log";
+        string dir = Directory.GetCurrentDirectory();
+        string fullPath;
+
+        fullPath = Path.GetFullPath(dir + path + fileName);
+        //Debug.Log(fullPath);
+        if (!File.Exists(fullPath))
+        {
+            // Create a file to write to.
+            using (StreamWriter sw = File.CreateText(fullPath))
+            {
+                sw.WriteLine(Info);
+            }
+        }
+        else
+        {
+            using (StreamWriter sw = File.AppendText(fullPath))
+            {
+                string myString = string.Format("{0,6:F3} | ({1,6:0.00}, {2,6:0.00}) | ", Time.timeSinceLevelLoad, transform.position.x, transform.position.z); 
+                sw.WriteLine(myString +  Info);
+            }
+        }
+    }
+    public void InitAgentLog()
+    {
+        string fileName = agentType.ToString() + AgentID.ToString() + ".txt";
+        string path = @"\Assets\Log\";
+        string dir = Directory.GetCurrentDirectory();
+        string fullPath;
+
+        fullPath = Path.GetFullPath(dir + path);
+        //delete previous files
+
+        string[] txtList = Directory.GetFiles(fullPath, fileName);
+        foreach (string f in txtList)
+        {
+            Debug.Log(f);
+            File.Delete(f);
+        }
+
+        //create new files
+        using (StreamWriter sw = File.CreateText(fullPath + fileName))
+        {
+            sw.WriteLine("Agent ID: " + GetAgentID().ToString() + "\nAgent Type: " + GetAgentType().ToString() +"\nTeam: " + transform.tag);
+
+        }
     }
 }

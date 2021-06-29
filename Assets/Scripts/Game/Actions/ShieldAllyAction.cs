@@ -10,12 +10,14 @@ public class ShieldAllyAction : Action
     private Vector3 directionOffset;
     private Vector3 direction;
     private Vector3 TargetPosition;
+    private bool logged = false;
 
     public ShieldAllyAction(Transform Agent, Transform TargetAgent)
     {
         name = "ShieldAllyAction";
         AgentTransform = Agent;
         AllyTransform = TargetAgent;
+        
 
 
     }
@@ -31,10 +33,14 @@ public class ShieldAllyAction : Action
         //offset to the middle (basic prediction off where more danger might come from)
         directionOffset = new Vector3(0.0f, 1.0f, 7.0f) - AllyTransform.position;
         directionOffset.Normalize();
-        TargetPosition = AllyTransform.position + directionOffset;
+        TargetPosition = AllyTransform.position + directionOffset * 1.1f;
         direction = TargetPosition - AgentTransform.position;
         direction.Normalize();
-
+        if (!logged)
+        {
+            AgentTransform.GetComponent<Agent>().LogAgentActionResult("Shielding ally | " + AllyTransform.GetComponent<Agent>().GetAgentType() + AllyTransform.GetComponent<Agent>().GetAgentID());
+            logged = true;
+        }
         AgentTransform.position += direction * movementSpeed * Time.deltaTime;
         return Action.State.BeingExecuted;
     }

@@ -45,6 +45,7 @@ public class DeliverResourceAction : Action
             {
                 ResourceTransform.parent = null;
                 ResourceTransform.GetComponentInChildren<Resource>().ConsumedBy(TargetAgentTransform);
+                AgentTransform.GetComponent<Agent>().LogAgentActionResult("Delivered Resource");
                 return State.Executed;
             }
             return State.BeingExecuted;
